@@ -1,17 +1,13 @@
 package com.gccloud.ncservice.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "newspaper")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class NewsPaperMasterRate {
 
     @Id
@@ -49,8 +45,113 @@ public class NewsPaperMasterRate {
     private String circulationBase;
 
     @Column(name = "circulation", nullable = false)
-    private int circulation;
+    private long circulation;
 
     @Column(name = "rate", nullable = false)
     private double rate;
+
+    // Getters and Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNewspaperCode() {
+        return newspaperCode;
+    }
+
+    public void setNewspaperCode(String newspaperCode) {
+        this.newspaperCode = newspaperCode;
+    }
+
+    public String getNewspaperName() {
+        return newspaperName;
+    }
+
+    public void setNewspaperName(String newspaperName) {
+        this.newspaperName = newspaperName;
+    }
+
+    public String getLastRenewedDate() {
+        return lastRenewedDate;
+    }
+
+    public void setLastRenewedDate(String lastRenewedDate) {
+        this.lastRenewedDate = lastRenewedDate;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getPlaceOfPublication() {
+        return placeOfPublication;
+    }
+
+    public void setPlaceOfPublication(String placeOfPublication) {
+        this.placeOfPublication = placeOfPublication;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getPeriodicity() {
+        return periodicity;
+    }
+
+    public void setPeriodicity(String periodicity) {
+        this.periodicity = periodicity;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getRegularityStatus() {
+        return regularityStatus;
+    }
+
+    public void setRegularityStatus(String regularityStatus) {
+        this.regularityStatus = regularityStatus;
+    }
+
+    public String getCirculationBase() {
+        return circulationBase;
+    }
+
+    public void setCirculationBase(String circulationBase) {
+        this.circulationBase = circulationBase;
+    }
+
+    public long getCirculation() {
+        return circulation;
+    }
+
+    public void setCirculation(long circulation) {
+        this.circulation = circulation;
+    }
+
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
+    }
 }

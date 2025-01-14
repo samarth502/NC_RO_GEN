@@ -1,5 +1,6 @@
 package com.gccloud.ncservice.controller;
 
+import com.gccloud.ncservice.entity.NewsPaperMasterRate;
 import com.gccloud.ncservice.service.ImportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -49,11 +51,13 @@ public class ApiController {
 
             // Process file
             importService.importData(file);
+            List<NewsPaperMasterRate> masterRates = importService.fecthAllMasterRates();
 
             // Success response
             response.put("status", "success");
             response.put("message", "File uploaded successfully.");
             response.put("fileName", fileName);
+            response.put("masterRates", masterRates);
             return ResponseEntity.status(HttpStatus.OK).body(response);
 
         } catch (Exception e) {

@@ -1,0 +1,18 @@
+#loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(128, 128, 128, 0.5); /* Transparent grey background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.spinner-border {
+    width: 6rem;
+    height: 6rem;
+    border-width: 10px;
+}
