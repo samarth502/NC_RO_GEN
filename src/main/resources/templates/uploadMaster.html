@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/css/common.css">
 
 </head>
+
 <body>
 <!-- Header Section -->
 <header class="bg-primary text-white py-3">
@@ -33,6 +34,9 @@
             <ul class="navbar-nav nav-tabs" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link text-dark active" data-bs-toggle="tab" href="#uploadRates" role="tab">Upload New Master Rates</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" data-bs-toggle="tab" href="#createRo" role="tab">Create RO</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-dark" data-bs-toggle="tab" href="#generateRO" role="tab">Generate RO For Release</a>
@@ -69,6 +73,156 @@
                     <thead></thead>
                     <tbody></tbody>
                 </table>
+            </div>
+        </div>
+
+        <!-- Create Ro-->
+        <div class="tab-pane fade" id="createRo" role="tabpanel">
+            <h2>Create RO</h2>
+            <div  >
+                <div class="form-group">
+
+                    <div hidden class="input-group mb-3">
+                        <span class="input-group-text">
+                          Dav
+                        </span>
+
+                        <input type="text" class="form-control uppercase" name="dav" id="dav" readonly required>
+
+                    </div>
+
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">
+                            Client Name
+                        </span>
+
+                       <input type="text" class="form-control uppercase" name="clientName" id="clientName" required>
+
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">
+                            Page Number
+                        </span>
+
+                        <input type="text" class="form-control" name="pageNumber" id="pageNumber" required>
+
+                    </div>
+
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">
+                            NewsPaper name
+                        </span>
+
+                        <select class="form-select" name="newspaperName" id="newspaperName" required onchange="fetchStates();fetchPublicationName();fetchLanguage()">
+                            <option selected disabled>Select Newspaper</option>
+                            <option th:each="name : ${newsPaperName}" th:value="${name}" th:text="${name}"></option>
+                        </select>
+
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">
+                            State
+                        </span>
+
+                        <select class="form-select" required name="state" id="stateDropdown">
+                               <option selected disabled>Select State</option>
+                        </select>
+
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">
+                            Edition
+                        </span>
+
+                        <select class="form-select" required name="placeOfPublication" id="placeOfPublication">
+                            <option selected disabled>Select Edition</option>
+                        </select>
+
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">
+                           language
+                        </span>
+
+                        <select class="form-select" required name="language" id="language">
+                            <option selected disabled>Select Language</option>
+                        </select>
+
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">
+                           Colour
+                        </span>
+
+                        <select class="form-select" required name="color" id="color">
+                            <option value="" selected disabled>Select color</option>
+                            <option value="B/W">B/W</option>
+                            <option value="Color">Color</option>
+                        </select>
+
+                    </div>
+
+                    <div class="input-group">
+                            <span class="input-group-text">
+                                Date
+                            </span>
+                        <input type="date" class="form-control" id="dateInput" name="date" />
+                    </div>
+                    <table class="table table-responsive table-bordered" style="width: 100% !important;">
+                        <thead>
+                        <tr>
+
+                            <th rowspan="2">Action</th>
+                            <th rowspan="2">Client Name</th>
+                            <th rowspan="2">Page Number</th>
+                            <th rowspan="2">Newspaper Name</th>
+                            <th rowspan="2">State</th>
+                            <th rowspan="2">Edition</th>
+                            <th rowspan="2">DAVP Rates<br> per sq cm <br>in Rs</th>
+<!--                            <th rowspan="2">Color</th>-->
+                            <th rowspan="2" id="extraColumnHeader" style="display: none;">Colour <br>40% Extra</th>
+                            <th rowspan="2">Language</th>
+
+
+                            <th rowspan="2">RO Number</th>
+                            <th rowspan="2">RO Date</th>
+                            <th rowspan="2">Date of <br>publication</th>
+                            <th colspan="2">Size</th>
+                            <th rowspan="2">Size in <br>cm2</th>
+                            <th rowspan="2">Total Amount <br>Rs</th>
+                            <th rowspan="2">Price to <br>Newspaper </th>
+                            <th rowspan="2">GST Amount</th>
+                            <th rowspan="2">New Payable</th>
+                            <th rowspan="2">Email id</th>
+                            <th rowspan="2">Phone Number</th>
+
+
+
+                        </tr>
+                        <tr>
+                            <th>Length <br>cm</th>
+                            <th>Breadth <br>cm</th>
+
+                        </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                        <!-- Rows will be dynamically added here -->
+                        </tbody>
+                    </table>
+                </div>
+
+
+                    <button type="button" class="btn btn-primary mb-3" onclick="addRow()">Add Row</button>
+
+
+                </div>
             </div>
         </div>
 
@@ -111,4 +265,5 @@
 <script src="/js/common.js"></script>
 
 </body>
+
 </html>

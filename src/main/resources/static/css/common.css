@@ -16,3 +16,7 @@
     height: 6rem;
     border-width: 10px;
 }
+
+.uppercase {
+    text-transform: uppercase;
+}

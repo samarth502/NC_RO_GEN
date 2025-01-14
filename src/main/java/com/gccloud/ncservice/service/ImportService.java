@@ -12,4 +12,12 @@ public interface ImportService {
     void importData(MultipartFile file);
 
     List<NewsPaperMasterRate> fecthAllMasterRates();
+
+    List<String> getAllState(String newPaperName);
+
+    List<String> getAllPublicationName(String newspaperName);
+
+    List<String> getLanguageByNewPaperName(String newspaperName);
+
+    String getDavRates(String newspaperName, String state, String edition, String language);
 }

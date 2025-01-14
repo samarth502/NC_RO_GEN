@@ -2,15 +2,19 @@ package com.gccloud.ncservice.serviceimpl;
 
 import com.gccloud.ncservice.entity.NewsPaperMasterRate;
 import com.gccloud.ncservice.repository.NewsPaperMasterRateRepository;
+import com.gccloud.ncservice.repository.NewsPaperMasterRateRepository;
 import com.gccloud.ncservice.service.ImportService;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,6 +24,9 @@ import java.util.List;
 @Service
 @Transactional
 public class ImportServiceImpl implements ImportService {
+
+    @Autowired
+    NewsPaperMasterRateRepository newsPaperMasterRateRepository;
 
 
     private final NewsPaperMasterRateRepository masterRateRepo;
@@ -161,6 +168,26 @@ public class ImportServiceImpl implements ImportService {
             default:
                 return null;
         }
+    }
+
+    @Override
+    public List<String> getAllState(String newPaperName) {
+        return newsPaperMasterRateRepository.getAllState(newPaperName);
+    }
+
+    @Override
+    public List<String> getAllPublicationName(String newspaperName) {
+        return newsPaperMasterRateRepository.getPublicationName(newspaperName);
+    }
+
+    @Override
+    public List<String> getLanguageByNewPaperName(String newspaperName) {
+        return newsPaperMasterRateRepository.getLanguage(newspaperName);
+    }
+
+    @Override
+    public String getDavRates(String newspaperName, String state, String edition, String language) {
+        return newsPaperMasterRateRepository.getDavRates(newspaperName,state,edition,language);
     }
 
 }

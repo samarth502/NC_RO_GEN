@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
@@ -68,6 +65,49 @@ public class ApiController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
+
+    @GetMapping("/getState")
+    public List<String> getStateByNewspaperName(@RequestParam("newspaperName") String newspaperName){
+
+
+        List<String> state = importService.getAllState(newspaperName);
+
+        return state;
+    }
+
+    @GetMapping("/fetchPublicationName")
+    public List<String> getAllPublicationNameWithNewspaper(@RequestParam("newspaperName") String newspaperName){
+
+
+        List<String> publicationName = importService.getAllPublicationName(newspaperName);
+
+        return publicationName;
+    }
+
+    @GetMapping("/language")
+    public List<String> getAllLanguageWithNewspaper(@RequestParam("newspaperName") String newspaperName){
+
+
+        List<String> publicationName = importService.getLanguageByNewPaperName(newspaperName);
+
+        return publicationName;
+    }
+
+    @GetMapping("/getDavRates")
+    public String getDavRatesBy(@RequestParam("newspaperName") String newspaperName,
+                                      @RequestParam("state") String state,
+                                      @RequestParam("edition") String edition,
+                                      @RequestParam("language") String language
+
+    ){
+
+
+        String publicationName = importService.getDavRates(newspaperName,state,edition,language);
+
+        return publicationName;
+    }
+
 
 
 }
