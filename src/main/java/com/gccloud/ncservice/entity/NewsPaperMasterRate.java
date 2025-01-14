@@ -24,6 +24,9 @@ public class NewsPaperMasterRate {
     @Column(name = "newspaper_name", nullable = false)
     private String newspaperName;
 
+    @Column(name = "last_renewed_date", nullable = false)
+    private String lastRenewedDate;
+
     @Column(name = "state", nullable = false)
     private String state;
 
