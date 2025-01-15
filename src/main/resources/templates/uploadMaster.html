@@ -55,7 +55,7 @@
 <!-- Tab Content -->
 <div class="container-fluid mt-4">
     <div class="tab-content">
-        <!-- Upload New Master Rates Tab -->
+        <!-- Upload New Master Rates Tab (Completed Not To Be Changes Done AnyMore)-->
         <div class="tab-pane fade show active" id="uploadRates" role="tabpanel">
             <h2>Upload New Master Rates</h2>
             <p>This is where you can upload new master rates for your service.</p>
@@ -69,7 +69,7 @@
 
             <!-- Display File Content -->
             <div id="fileContent" class="table-responsive">
-                <table class="table table-bordered" id="dataTable">
+                <table class="table table-sm table-bordered table-responsive" id="dataTable">
                     <thead></thead>
                     <tbody></tbody>
                 </table>
@@ -78,104 +78,113 @@
 
         <!-- Create Ro-->
         <div class="tab-pane fade" id="createRo" role="tabpanel">
-            <h2>Create RO</h2>
-            <div  >
-                <div class="form-group">
+            <div class="container-fluid">
+                <h2>Create RO</h2>
+                <div  >
+                    <div class="container-fluid">
+                        <form>
+                            <div class="row">
+                                <!-- DAV (Hidden Field) -->
+                                <div class="col-md-3 mb-3" >
+                                    <div class="input-group">
+                                        <span class="input-group-text">Dav</span>
+                                        <input type="text" class="form-control uppercase" name="dav" id="dav" readonly required>
+                                    </div>
+                                </div>
 
-                    <div  class="input-group mb-3">
-                        <span class="input-group-text">
-                          Dav
-                        </span>
+                                <!-- Client Name -->
+                                <div class="col-md-3 mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text">Client Name</span>
+                                        <input type="text" class="form-control uppercase" name="clientName" id="clientName" required>
+                                    </div>
+                                </div>
 
-                        <input type="text" class="form-control uppercase" name="dav" id="dav"   required>
+                                <!-- Page Number -->
+                                <div class="col-md-3 mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text">Page Number</span>
+                                        <input type="text" class="form-control" name="pageNumber" id="pageNumber" required>
+                                    </div>
+                                </div>
 
+                                <!-- Newspaper Name -->
+                                <div class="col-md-3 mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text">Newspaper Name</span>
+                                        <select class="form-select" name="newspaperName" id="newspaperName" required onchange="fetchStates();fetchPublicationName();fetchLanguage()">
+                                            <option value="" selected disabled>Select Newspaper</option>
+                                            <option th:each="name : ${newsPaperName}" th:value="${name}" th:text="${name}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- State -->
+                                <div class="col-md-3 mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text">State</span>
+                                        <select class="form-select" required name="state" id="stateDropdown">
+                                            <option value="" selected disabled>Select State</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Edition -->
+                                <div class="col-md-3 mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text">Edition</span>
+                                        <select class="form-select" required name="placeOfPublication" id="placeOfPublication">
+                                            <option value="" selected disabled>Select Edition</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Language -->
+                                <div class="col-md-3 mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text">Language</span>
+                                        <select class="form-select" required name="language" id="language">
+                                            <option value="" selected disabled>Select Language</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Colour -->
+                                <div class="col-md-3 mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text">Colour</span>
+                                        <select class="form-select" required name="color" id="color">
+                                            <option value="" selected disabled>Select Color</option>
+                                            <option value="B/W">B/W</option>
+                                            <option value="Color">Color</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- GST -->
+                                <div class="col-md-3 mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text">GST Applicable</span>
+                                        <select class="form-select" required name="color" id="gst">
+                                            <option value="" selected disabled>Select GST</option>
+                                            <option value="IGST">IGST</option>
+                                            <option value="CGST">CGST</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Date -->
+                                <div class="col-md-3 mb-3" >
+                                    <div class="input-group">
+                                        <span class="input-group-text">Date</span>
+                                        <input type="date" class="form-control" id="dateInput" name="date" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
 
-
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">
-                            Client Name
-                        </span>
-
-                       <input type="text" class="form-control uppercase" name="clientName" id="clientName" required>
-
-                    </div>
-
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">
-                            Page Number
-                        </span>
-
-                        <input type="text" class="form-control" name="pageNumber" id="pageNumber" required>
-
-                    </div>
-
-
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">
-                            NewsPaper name
-                        </span>
-
-                        <select class="form-select" name="newspaperName" id="newspaperName" required onchange="fetchStates();fetchPublicationName();fetchLanguage()">
-                            <option selected disabled>Select Newspaper</option>
-                            <option th:each="name : ${newsPaperName}" th:value="${name}" th:text="${name}"></option>
-                        </select>
-
-                    </div>
-
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">
-                            State
-                        </span>
-
-                        <select class="form-select" required name="state" id="stateDropdown">
-                               <option selected disabled>Select State</option>
-                        </select>
-
-                    </div>
-
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">
-                            Edition
-                        </span>
-
-                        <select class="form-select" required name="placeOfPublication" id="placeOfPublication">
-                            <option selected disabled>Select Edition</option>
-                        </select>
-
-                    </div>
-
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">
-                           language
-                        </span>
-
-                        <select class="form-select" required name="language" id="language">
-                            <option selected disabled>Select Language</option>
-                        </select>
-
-                    </div>
-
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">
-                           Colour
-                        </span>
-
-                        <select class="form-select" required name="color" id="color">
-                            <option value="" selected disabled>Select color</option>
-                            <option value="B/W">B/W</option>
-                            <option value="Color">Color</option>
-                        </select>
-
-                    </div>
-
-                    <div class="input-group">
-                            <span class="input-group-text">
-                                Date
-                            </span>
-                        <input type="date" class="form-control" id="dateInput" name="date" />
-                    </div>
-                    <table class="table table-responsive table-bordered" style="width: 100% !important;">
+                    <table class="table table-sm table-responsive table-bordered" style="width: 100% !important;">
                         <thead>
                         <tr>
 
@@ -187,7 +196,7 @@
                             <th rowspan="2">State</th>
                             <th rowspan="2">Edition</th>
                             <th rowspan="2">DAVP Rates<br> per sq cm <br>in Rs</th>
-<!--                            <th rowspan="2">Color</th>-->
+                            <!--                            <th rowspan="2">Color</th>-->
                             <th rowspan="2" id="extraColumnHeader" style="display: none;">Colour <br>40% Extra</th>
                             <th rowspan="2">Language</th>
 
@@ -217,9 +226,6 @@
                         <!-- Rows will be dynamically added here -->
                         </tbody>
                     </table>
-                </div>
-
-
                     <button type="button" class="btn btn-primary mb-3" onclick="addRow()">Add Row</button>
 
 

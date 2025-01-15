@@ -77,33 +77,54 @@ public class ApiController {
     }
 
     @GetMapping("/fetchPublicationName")
-    public List<String> getAllPublicationNameWithNewspaper(@RequestParam("newspaperName") String newspaperName){
+    public List<String> getAllPublicationNames(
+            @RequestParam(value ="newspaperName") String newspaperName,
+            @RequestParam(value ="state", required = false) String state) {
 
+        List<String> publicationNames;
 
-        List<String> publicationName = importService.getAllPublicationName(newspaperName);
+        // Check if the optional parameter 'state' is present
+        if (state != null && !state.isEmpty()) {
+            // Call service method considering both newspaperName and state
+            publicationNames = importService.getPublicationNamesByNewspaperAndState(newspaperName, state);
+        } else {
+            // Call service method with only newspaperName
+            publicationNames = importService.getAllPublicationName(newspaperName);
+        }
 
-        return publicationName;
+        return publicationNames;
     }
+
 
     @GetMapping("/language")
-    public List<String> getAllLanguageWithNewspaper(@RequestParam("newspaperName") String newspaperName){
+    public List<String> getAllLanguageWithNewspaper(
+            @RequestParam("newspaperName") String newspaperName,
+            @RequestParam(value = "publicationPlace", required = false) String publicationPlace) {
 
+        List<String> languages;
 
-        List<String> publicationName = importService.getLanguageByNewPaperName(newspaperName);
+        // Check if the optional parameter 'publicationPlace' is provided
+        if (publicationPlace != null && !publicationPlace.isEmpty()) {
+            // Call service method with both newspaperName and publicationPlace
+            languages = importService.getLanguageByNewspaperAndPublicationPlace(newspaperName, publicationPlace);
+        } else {
+            // Call service method with only newspaperName
+            languages = importService.getLanguageByNewPaperName(newspaperName);
+        }
 
-        return publicationName;
+        return languages;
     }
+
 
     @GetMapping("/getDavRates")
     public String getDavRatesBy(@RequestParam("newspaperName") String newspaperName,
-                                      @RequestParam("state") String state,
                                       @RequestParam("edition") String edition,
                                       @RequestParam("language") String language
 
     ){
 
 
-        String publicationName = importService.getDavRates(newspaperName,state,edition,language);
+        String publicationName = importService.getDavRates(newspaperName,edition,language);
 
         return publicationName;
     }

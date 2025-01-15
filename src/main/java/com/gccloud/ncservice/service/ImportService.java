@@ -19,5 +19,9 @@ public interface ImportService {
 
     List<String> getLanguageByNewPaperName(String newspaperName);
 
-    String getDavRates(String newspaperName, String state, String edition, String language);
+    String getDavRates(String newspaperName, String edition, String language);
+
+    List<String> getPublicationNamesByNewspaperAndState(String newspaperName, String state);
+
+    List<String> getLanguageByNewspaperAndPublicationPlace(String newspaperName, String publicationPlace);
 }

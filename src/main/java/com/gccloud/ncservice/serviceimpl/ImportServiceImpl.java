@@ -25,10 +25,6 @@ import java.util.List;
 @Transactional
 public class ImportServiceImpl implements ImportService {
 
-    @Autowired
-    NewsPaperMasterRateRepository newsPaperMasterRateRepository;
-
-
     private final NewsPaperMasterRateRepository masterRateRepo;
 
     @Autowired
@@ -102,49 +98,48 @@ public class ImportServiceImpl implements ImportService {
         NewsPaperMasterRate newspaper = new NewsPaperMasterRate();
 
         // Extract NewspaperName and LastRenewedDate from index 1
-        String[] nameAndDate = data[1].split(" - ");
-        String newspaperName = nameAndDate[0];
-        String lastRenewedDate = nameAndDate.length > 1 ? nameAndDate[1] : null;
+        String[] nameAndDate = data[1].trim().toUpperCase().split(" - ");
+        String newspaperName = nameAndDate[0].trim();
+        String lastRenewedDate = nameAndDate.length > 1 ? nameAndDate[1].trim() : null;
 
-        // Map the values to the entity
-        newspaper.setNewspaperCode(data[0]);
+        // Map the values to the entity with trimming and uppercasing
+        newspaper.setNewspaperCode(data[0].trim().toUpperCase());
         newspaper.setNewspaperName(newspaperName); // Set the name
         newspaper.setLastRenewedDate(lastRenewedDate); // Set the last renewed date
-        newspaper.setState(data[2]);
-        newspaper.setPlaceOfPublication(data[3]);
-        newspaper.setLanguage(data[4]);
-        newspaper.setPeriodicity(data[5]);
-        newspaper.setCategory(data[6]);
-        newspaper.setRegularityStatus(data[7]);
-        newspaper.setCirculationBase(data[8]);
-        newspaper.setCirculation(Long.parseLong(data[9]));
-        newspaper.setRate(Double.parseDouble(data[10]));
+        newspaper.setState(data[2].trim().toUpperCase());
+        newspaper.setPlaceOfPublication(data[3].trim().toUpperCase());
+        newspaper.setLanguage(data[4].trim().toUpperCase());
+        newspaper.setPeriodicity(data[5].trim().toUpperCase());
+        newspaper.setCategory(data[6].trim().toUpperCase());
+        newspaper.setRegularityStatus(data[7].trim().toUpperCase());
+        newspaper.setCirculationBase(data[8].trim().toUpperCase());
+        newspaper.setCirculation(Long.parseLong(data[9].trim()));
+        newspaper.setRate(Double.parseDouble(data[10].trim()));
 
         return newspaper;
     }
-
 
     private NewsPaperMasterRate mapToEntity(Row row) {
         NewsPaperMasterRate newspaper = new NewsPaperMasterRate();
 
         // Extract NewspaperName and LastRenewedDate from index 1
-        String[] nameAndDate = getCellValue(row.getCell(1)).split(" - ");
-        String newspaperName = nameAndDate[0];
-        String lastRenewedDate = nameAndDate.length > 1 ? nameAndDate[1] : null;
+        String[] nameAndDate = getCellValue(row.getCell(1)).trim().toUpperCase().split(" - ");
+        String newspaperName = nameAndDate[0].trim();
+        String lastRenewedDate = nameAndDate.length > 1 ? nameAndDate[1].trim() : null;
 
-        // Map the values to the entity
-        newspaper.setNewspaperCode(getCellValue(row.getCell(0)));
+        // Map the values to the entity with trimming and uppercasing
+        newspaper.setNewspaperCode(getCellValue(row.getCell(0)).trim().toUpperCase());
         newspaper.setNewspaperName(newspaperName); // Set the name
         newspaper.setLastRenewedDate(lastRenewedDate); // Set the last renewed date
-        newspaper.setState(getCellValue(row.getCell(2)));
-        newspaper.setPlaceOfPublication(getCellValue(row.getCell(3)));
-        newspaper.setLanguage(getCellValue(row.getCell(4)));
-        newspaper.setPeriodicity(getCellValue(row.getCell(5)));
-        newspaper.setCategory(getCellValue(row.getCell(6)));
-        newspaper.setRegularityStatus(getCellValue(row.getCell(7)));
-        newspaper.setCirculationBase(getCellValue(row.getCell(8)));
-        newspaper.setCirculation(Long.parseLong(getCellValue(row.getCell(9))));
-        newspaper.setRate(Double.parseDouble(getCellValue(row.getCell(10))));
+        newspaper.setState(getCellValue(row.getCell(2)).trim().toUpperCase());
+        newspaper.setPlaceOfPublication(getCellValue(row.getCell(3)).trim().toUpperCase());
+        newspaper.setLanguage(getCellValue(row.getCell(4)).trim().toUpperCase());
+        newspaper.setPeriodicity(getCellValue(row.getCell(5)).trim().toUpperCase());
+        newspaper.setCategory(getCellValue(row.getCell(6)).trim().toUpperCase());
+        newspaper.setRegularityStatus(getCellValue(row.getCell(7)).trim().toUpperCase());
+        newspaper.setCirculationBase(getCellValue(row.getCell(8)).trim().toUpperCase());
+        newspaper.setCirculation(Long.parseLong(getCellValue(row.getCell(9)).trim()));
+        newspaper.setRate(Double.parseDouble(getCellValue(row.getCell(10)).trim()));
 
         return newspaper;
     }
@@ -172,22 +167,32 @@ public class ImportServiceImpl implements ImportService {
 
     @Override
     public List<String> getAllState(String newPaperName) {
-        return newsPaperMasterRateRepository.getAllState(newPaperName);
+        return masterRateRepo.getAllState(newPaperName);
     }
 
     @Override
     public List<String> getAllPublicationName(String newspaperName) {
-        return newsPaperMasterRateRepository.getPublicationName(newspaperName);
+        return masterRateRepo.getPublicationName(newspaperName);
     }
 
     @Override
     public List<String> getLanguageByNewPaperName(String newspaperName) {
-        return newsPaperMasterRateRepository.getLanguage(newspaperName);
+        return masterRateRepo.getLanguage(newspaperName);
     }
 
     @Override
-    public String getDavRates(String newspaperName, String state, String edition, String language) {
-        return newsPaperMasterRateRepository.getDavRates(newspaperName,state,edition,language);
+    public String getDavRates(String newspaperName, String edition, String language) {
+        return masterRateRepo.getDavRates(newspaperName,edition,language);
+    }
+
+    @Override
+    public List<String> getPublicationNamesByNewspaperAndState(String newspaperName, String state) {
+        return masterRateRepo.getPublicationNameByState(newspaperName, state);
+    }
+
+    @Override
+    public List<String> getLanguageByNewspaperAndPublicationPlace(String newspaperName, String publicationPlace) {
+        return masterRateRepo.getLanguageByPublication(newspaperName, publicationPlace);
     }
 
 }

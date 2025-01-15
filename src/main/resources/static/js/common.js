@@ -543,87 +543,82 @@ document.addEventListener("DOMContentLoaded",function (){
 
 
 function fetchLanguage() {
-
     const newspaperDropdown = document.getElementById('newspaperName');
-    const selectedNewspaper2 = newspaperDropdown.value; // Get the selected newspaper name
-
+    const placeOfPublicationDropdown = document.getElementById('placeOfPublication');
     const languageDropDown = document.getElementById('language');
-    const selectedNewspaper = decodeHTML(selectedNewspaper2); // Decode the newspaper name if needed
 
-    // Clear the Place of Publication dropdown
-    languageDropDown.innerHTML = '<option selected disabled>Select Place Of Publication</option>';
+    const selectedNewspaper = decodeHTML(newspaperDropdown.value); // Decode the selected newspaper name
+    const selectedPublicationPlace = placeOfPublicationDropdown.value; // Get the selected place of publication
 
-    console.log("selectedNewspaper:", selectedNewspaper);
+    // Clear the Language dropdown
+    languageDropDown.innerHTML = '<option value="" selected disabled>Select Language</option>';
 
-    // URL to fetch publication names
-    const url = `/api/language?newspaperName=${selectedNewspaper}`;
+    // Construct the API URL dynamically
+    let url = `/api/language?newspaperName=${encodeURIComponent(selectedNewspaper)}`;
+    if (selectedPublicationPlace) {
+        url += `&publicationPlace=${encodeURIComponent(selectedPublicationPlace)}`;
+    }
 
-    console.log("url", url);
+    console.log("API URL:", url);
 
     // Fetch data from the backend
     fetch(url)
         .then(response => response.json())
         .then(data => {
-            console.log("data", data);
+            console.log("Response Data:", data);
 
-            // Assuming the response contains publication names
-            const publicationNames = data;
-
-            // Populate the Place of Publication dropdown
-            publicationNames.forEach(pubName => {
+            // Populate the Language dropdown
+            data.forEach(language => {
                 const option = document.createElement('option');
-                option.value = pubName;
-                option.textContent = pubName;
+                option.value = language;
+                option.textContent = language;
                 languageDropDown.appendChild(option);
             });
         })
         .catch(error => {
-            console.error('Error fetching data:', error);
+            console.error('Error fetching languages:', error);
         });
 }
 
-
 function fetchPublicationName() {
 
+    debugger;
     const newspaperDropdown = document.getElementById('newspaperName');
-    const selectedNewspaper2 = newspaperDropdown.value; // Get the selected newspaper name
-
+    const stateDropdown = document.getElementById('stateDropdown');
     const placeOfPublicationDropdown = document.getElementById('placeOfPublication');
-    const selectedNewspaper = decodeHTML(selectedNewspaper2); // Decode the newspaper name if needed
+
+    const selectedNewspaper = decodeHTML(newspaperDropdown.value); // Decode the selected newspaper name
+    const selectedState = stateDropdown.value; // Get the selected state
 
     // Clear the Place of Publication dropdown
-    placeOfPublicationDropdown.innerHTML = '<option selected disabled>Select Place Of Publication</option>';
+    placeOfPublicationDropdown.innerHTML = '<option value="" selected disabled>Select Place Of Publication</option>';
 
-    console.log("selectedNewspaper:", selectedNewspaper);
+    // Construct the API URL dynamically
+    let url = `/api/fetchPublicationName?newspaperName=${encodeURIComponent(selectedNewspaper)}`;
+    if (selectedState) {
+        url += `&state=${encodeURIComponent(selectedState)}`;
+    }
 
-    // URL to fetch publication names
-    const url = `/api/fetchPublicationName?newspaperName=${selectedNewspaper}`;
-
-    console.log("url", url);
+    console.log("API URL:", url);
 
     // Fetch data from the backend
     fetch(url)
         .then(response => response.json())
         .then(data => {
-            console.log("data", data);
-
-            // Assuming the response contains publication names
-            const publicationNames = data;
+            console.log("Response Data:", data);
 
             // Populate the Place of Publication dropdown
-            publicationNames.forEach(pubName => {
+            data.forEach(publication => {
                 const option = document.createElement('option');
-                option.value = pubName;
-                option.textContent = pubName;
+                option.value = publication;
+                option.textContent = publication;
                 placeOfPublicationDropdown.appendChild(option);
             });
         })
         .catch(error => {
-            console.error('Error fetching data:', error);
+            console.error('Error fetching publications:', error);
         });
 }
-
-
 
 function fetchStates() {
     const newspaperDropdown = document.getElementById('newspaperName');
@@ -632,7 +627,7 @@ function fetchStates() {
     const selectedNewspaper = decodeHTML(selectedNewspaper2); // Decode the newspaper name if needed
 
     // Clear existing state options
-    stateDropdown.innerHTML = '<option selected disabled>Select State</option>';
+    stateDropdown.innerHTML = '<option value="" selected disabled>Select State</option>';
 
     console.log("selectedNewspaper:", selectedNewspaper);
 
