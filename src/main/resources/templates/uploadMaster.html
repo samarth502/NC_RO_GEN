@@ -123,7 +123,7 @@
                                 <div class="col-md-3 mb-3">
                                     <div class="input-group">
                                         <span class="input-group-text">State</span>
-                                        <select class="form-select" required name="state" id="stateDropdown">
+                                        <select class="form-select" required name="state" onchange="fetchPublicationName()" id="stateDropdown">
                                             <option value="" selected disabled>Select State</option>
                                         </select>
                                     </div>
@@ -133,7 +133,7 @@
                                 <div class="col-md-3 mb-3">
                                     <div class="input-group">
                                         <span class="input-group-text">Edition</span>
-                                        <select class="form-select" required name="placeOfPublication" id="placeOfPublication">
+                                        <select class="form-select" required name="placeOfPublication" id="placeOfPublication" onchange="fetchLanguage()">
                                             <option value="" selected disabled>Select Edition</option>
                                         </select>
                                     </div>

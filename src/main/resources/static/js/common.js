@@ -156,19 +156,18 @@ function showToast(icon, title, message, position = 'top-end', timer = 10000) {
 function getDav(){
 
     const newspaperName2 = document.getElementById("newspaperName").value.trim();
-    const state = document.getElementById("stateDropdown").value.trim();
     const edition = document.getElementById("placeOfPublication").value.trim();
     const language = document.getElementById("language").value.trim();
 
     // Check if any field is empty
-    if (!newspaperName2 || !state || !edition || !language) {
+    if (!newspaperName2 || !edition || !language) {
         return;
     }
 
     const newspaperName = decodeHTML(newspaperName2);
 
     // Build the URL with query parameters
-    const url = `/api/getDavRates?newspaperName=${encodeURIComponent(newspaperName)}&state=${encodeURIComponent(state)}&edition=${encodeURIComponent(edition)}&language=${encodeURIComponent(language)}`;
+    const url = `/api/getDavRates?newspaperName=${encodeURIComponent(newspaperName)}&edition=${encodeURIComponent(edition)}&language=${encodeURIComponent(language)}`;
 
     // Fetch the data from the backend
     fetch(url)
