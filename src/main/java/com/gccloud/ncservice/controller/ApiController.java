@@ -1,6 +1,7 @@
 package com.gccloud.ncservice.controller;
 
 import com.gccloud.ncservice.entity.NewsPaperMasterRate;
+import com.gccloud.ncservice.entity.RoGenerationData;
 import com.gccloud.ncservice.service.ImportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -119,16 +120,61 @@ public class ApiController {
     @GetMapping("/getDavRates")
     public String getDavRatesBy(@RequestParam("newspaperName") String newspaperName,
                                       @RequestParam("edition") String edition,
-                                      @RequestParam("language") String language
+                                      @RequestParam("language") String language,
+                                @RequestParam(value = "periodicity", required = false) String periodicity,
+                                @RequestParam(value = "category", required = false) String category
 
     ){
+        String davRates = "";
+        if ((periodicity == null || periodicity.isEmpty()) || (category == null || category.isEmpty()) || periodicity.equals("") || category.equals("")) {
+            davRates = importService.getDavRates(newspaperName, edition, language);
+        }
+        else{
+//            Dav Rate using Periodicity and category
+            davRates = importService.getDavRatesUsingPeriodicityAndCategory(newspaperName, edition, language,periodicity,category);
+        }
 
-
-        String publicationName = importService.getDavRates(newspaperName,edition,language);
-
-        return publicationName;
+        return davRates;
     }
 
+    @GetMapping("/fetchPeriodicity")
+    public List<String> getPeriodicityData( @RequestParam("newspaperName") String newspaperName){
+
+
+        List<String> periodicityData = importService.getPeriodicityByNewPaperName(newspaperName);
+        return periodicityData;
+
+    }
+    @GetMapping("/fetchCategory")
+    public List<String> getCategoryData( @RequestParam("newspaperName") String newspaperName,
+                                         @RequestParam(value = "periodicity",required = false) String periodicity){
+
+        List<String> categoryData;
+        if(periodicity.isEmpty() || periodicity.equals("") || (periodicity == null)){
+            categoryData = importService.fetchCategoryList(newspaperName);
+        }
+        else{
+            categoryData = importService.fetchCategoryListByPeriodicityName(newspaperName,periodicity);
+        }
+
+
+        return categoryData;
+
+    }
+
+    @PostMapping("/submitRoData")
+    public String goToSaveRoData(@RequestBody RoGenerationData roGenerationData){
+
+        String message = importService.saveRoData(roGenerationData);
+        return message;
+    }
+
+    @GetMapping("/fetchClientList")
+    public List<String> goToShoewClientList(){
+
+        List<String> clientList = importService.getAllClientNameList();
+        return clientList;
+    }
 
 
 }

@@ -1,6 +1,8 @@
 package com.gccloud.ncservice.service;
 
 import com.gccloud.ncservice.entity.NewsPaperMasterRate;
+import com.gccloud.ncservice.entity.RoGenerationData;
+import com.gccloud.ncservice.entity.RoGenerationData;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,4 +26,16 @@ public interface ImportService {
     List<String> getPublicationNamesByNewspaperAndState(String newspaperName, String state);
 
     List<String> getLanguageByNewspaperAndPublicationPlace(String newspaperName, String publicationPlace);
+
+    String saveRoData(RoGenerationData roGenerationData);
+
+    String getDavRatesUsingPeriodicityAndCategory(String newspaperName, String edition, String language, String periodicity, String category);
+
+    List<String> getPeriodicityByNewPaperName(String newspaperName);
+
+    List<String> fetchCategoryList(String newspaperName);
+
+    List<String> fetchCategoryListByPeriodicityName(String newspaperName, String periodicity);
+
+    List<String> getAllClientNameList();
 }

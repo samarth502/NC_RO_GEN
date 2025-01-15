@@ -14,6 +14,8 @@ public class NewsPaperMasterRate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+
     @Column(name = "newspaper_code", nullable = false, unique = true)
     private String newspaperCode;
 

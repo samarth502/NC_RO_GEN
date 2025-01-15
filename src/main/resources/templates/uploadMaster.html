@@ -88,7 +88,7 @@
                                 <div class="col-md-3 mb-3" >
                                     <div class="input-group">
                                         <span class="input-group-text">Dav</span>
-                                        <input type="text" class="form-control uppercase" name="dav" id="dav" readonly required>
+                                        <input type="text" class="form-control uppercase" name="dav" id="dav" placeholder="Data will Pre Filled" readonly required>
                                     </div>
                                 </div>
 
@@ -112,7 +112,7 @@
                                 <div class="col-md-3 mb-3">
                                     <div class="input-group">
                                         <span class="input-group-text">Newspaper Name</span>
-                                        <select class="form-select" name="newspaperName" id="newspaperName" required onchange="fetchStates();fetchPublicationName();fetchLanguage()">
+                                        <select class="form-select" name="newspaperName" id="newspaperName" required onchange="fetchStates();fetchPublicationName();fetchLanguage();fetchPeriodicity();fetchCategory()">
                                             <option value="" selected disabled>Select Newspaper</option>
                                             <option th:each="name : ${newsPaperName}" th:value="${name}" th:text="${name}"></option>
                                         </select>
@@ -165,13 +165,35 @@
                                 <div class="col-md-3 mb-3">
                                     <div class="input-group">
                                         <span class="input-group-text">GST Applicable</span>
-                                        <select class="form-select" required name="color" id="gst">
+                                        <select class="form-select" required name="gstType" id="gstType">
                                             <option value="" selected disabled>Select GST</option>
                                             <option value="IGST">IGST</option>
                                             <option value="CGST">CGST</option>
                                         </select>
                                     </div>
                                 </div>
+
+
+                                    <div class="col-md-3 mb-3" id="periodicityDropDown" style="display: none ">
+                                        <div class="input-group highlight">
+                                            <span class="input-group-text highlight">Periodicity</span>
+                                            <select class="form-select highlight" required name="periodicity" id="periodicity" onchange="fetchCategory()">
+                                                <option value="" selected disabled>Select Periodicity</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 mb-3" id="categoryDropDown" style="display: none ">
+                                        <div class="input-group highlight" >
+                                            <span class="input-group-text highlight" >Category</span>
+                                            <select class="form-select highlight" required name="category" id="category">
+                                                <option value="" selected disabled>Select Category</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+
 
                                 <!-- Date -->
                                 <div class="col-md-3 mb-3" >
@@ -236,7 +258,380 @@
         <!-- Generate RO For Release Tab -->
         <div class="tab-pane fade" id="generateRO" role="tabpanel">
             <h2>Generate RO For Release</h2>
-            <p>Here you can generate release orders for your campaigns.</p>
+            <div class="d-flex no-print">
+                <div class="col-md-3 mb-3" >
+                    <div class="input-group">
+                        <span class="input-group-text">client Name</span>
+                        <select class="form-select" name="client" id="client">
+                            <option value="" selected disabled >Select the client Name</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-3 no-print" >
+                    <div class="input-group">
+                        <span class="input-group-text">Submission Date</span>
+                        <input type="date" class="form-control" id="SubmissionDate" name="SubmissionDate" />
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-3 no-print" >
+                    <div class="input-group">
+                        <span class="input-group-text">RO Date</span>
+                        <input type="date" class="form-control" id="roDate" name="SubmissionDate" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid mt-4">
+                <!-- Header -->
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-6">
+                                <h4>NEERAJ COMMUNICATION</h4>
+                            </div>
+                            <div class="col-6">
+                                <p>(INS Accredited Agency)</p>
+                            </div>
+                        </div>
+                        <p>9, Apex Chamber 19, Vidhan Sabha Marg, Lucknow-226001</p>
+                        <p>Tele: 0522-4025804 | Mobile: 08318523654, 09838893800</p>
+                        <p>Email: <a href="mailto:pankaj@neerajcommunication.com">pankaj@neerajcommunication.com</a></p>
+                        <button class="btn btn-primary no-print w-25" onclick="printPage()">Print Page</button>
+                    </div>
+                    <div class="col-6 d-flex justify-content-end w-50">
+                        <table class="table details-table table-bordered w-50">
+                            <thead>
+                            <tr>
+                                <th>PAN No</th>
+                                <td>APJPP7180A</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th>GST No</th>
+                                <td>09APJPP7180A2ZQ</td>
+                            </tr>
+                            <tr>
+                                <th>INS Code</th>
+                                <td>11251</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr>
+
+                <!-- Release Order Info -->
+                <h2 class="text-center fw-bold text-decoration-underline">RELEASE ORDER</h2>
+                <div class="col-6">
+                    <div class="d-flex align-items-center justify-content-between w-50">
+                        <div>
+                            <h6>RO No.</h6>
+                        </div>
+                        <div>
+                            <p>NC/GOVT/DIPR/2025/996</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between w-50">
+                        <div>
+                            <h6>R.O. Date</h6>
+                        </div>
+                        <div>
+                            <p>13-Jan-25</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between w-50">
+                        <div>
+                            <h6>Publish Date</h6>
+                        </div>
+                        <div>
+                            <p>14-Jan-25</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between w-50">
+                        <div>
+                            <h6>Client</h6>
+                        </div>
+                        <div>
+                            <p>INFORMATION DEPARTMENT UP</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between w-50">
+                        <div>
+                            <h6>Page Position</h6>
+                        </div>
+                        <div>
+                            <p>Page 2 or Page 3</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col">
+                        <table class="table table-bordered">
+                            <thead class="table-light">
+                            <tr>
+                                <th>Size in C.M.</th>
+                                <th>Publication</th>
+                                <th>Language</th>
+                                <th>Edition</th>
+                                <th>DAVP Rate per Sq Cm (in Rs.)</th>
+                                <th>Colour 40% Extra</th>
+                                <th>Size in Sq Cm</th>
+                                <th>Total Amount (in Rs.)</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>25×40</td>
+                                <td>Sanbad Prathidin</td>
+                                <td>Bengali</td>
+                                <td>Kolkata</td>
+                                <td>59.96</td>
+                                <td>23.98</td>
+                                <td>1000</td>
+                                <td>83944.00</td>
+                            </tr>
+                            <tr>
+                                <td>25×40</td>
+                                <td>Sanbad Prathidin</td>
+                                <td>Bengali</td>
+                                <td>Kolkata</td>
+                                <td>59.96</td>
+                                <td>23.98</td>
+                                <td>1000</td>
+                                <td>83944.00</td>
+                            </tr>
+                            <tr>
+                                <td>25×40</td>
+                                <td>Sanbad Prathidin</td>
+                                <td>Bengali</td>
+                                <td>Kolkata</td>
+                                <td>59.96</td>
+                                <td>23.98</td>
+                                <td>1000</td>
+                                <td>83944.00</td>
+                            </tr>
+                            <tr>
+                                <td>25×40</td>
+                                <td>Sanbad Prathidin</td>
+                                <td>Bengali</td>
+                                <td>Kolkata</td>
+                                <td>59.96</td>
+                                <td>23.98</td>
+                                <td>1000</td>
+                                <td>83944.00</td>
+                            </tr>
+                            <tr>
+                                <td>25×40</td>
+                                <td>Sanbad Prathidin</td>
+                                <td>Bengali</td>
+                                <td>Kolkata</td>
+                                <td>59.96</td>
+                                <td>23.98</td>
+                                <td>1000</td>
+                                <td>83944.00</td>
+                            </tr>
+                            <tr>
+                                <td>25×40</td>
+                                <td>Sanbad Prathidin</td>
+                                <td>Bengali</td>
+                                <td>Kolkata</td>
+                                <td>59.96</td>
+                                <td>23.98</td>
+                                <td>1000</td>
+                                <td>83944.00</td>
+                            </tr>
+                            <tr>
+                                <td>25×40</td>
+                                <td>Sanbad Prathidin</td>
+                                <td>Bengali</td>
+                                <td>Kolkata</td>
+                                <td>59.96</td>
+                                <td>23.98</td>
+                                <td>1000</td>
+                                <td>83944.00</td>
+                            </tr>
+                            <tr>
+                                <td>25×40</td>
+                                <td>Sanbad Prathidin</td>
+                                <td>Bengali</td>
+                                <td>Kolkata</td>
+                                <td>59.96</td>
+                                <td>23.98</td>
+                                <td>1000</td>
+                                <td>83944.00</td>
+                            </tr>
+                            <tr>
+                                <td>25×40</td>
+                                <td>Sanbad Prathidin</td>
+                                <td>Bengali</td>
+                                <td>Kolkata</td>
+                                <td>59.96</td>
+                                <td>23.98</td>
+                                <td>1000</td>
+                                <td>83944.00</td>
+                            </tr>
+                            <tr>
+                                <td>25×40</td>
+                                <td>Sanbad Prathidin</td>
+                                <td>Bengali</td>
+                                <td>Kolkata</td>
+                                <td>59.96</td>
+                                <td>23.98</td>
+                                <td>1000</td>
+                                <td>83944.00</td>
+                            </tr>
+                            <tr>
+                                <td>25×40</td>
+                                <td>Sanbad Prathidin</td>
+                                <td>Bengali</td>
+                                <td>Kolkata</td>
+                                <td>59.96</td>
+                                <td>23.98</td>
+                                <td>1000</td>
+                                <td>83944.00</td>
+                            </tr>
+                            <tr>
+                                <td>25×40</td>
+                                <td>Sanbad Prathidin</td>
+                                <td>Bengali</td>
+                                <td>Kolkata</td>
+                                <td>59.96</td>
+                                <td>23.98</td>
+                                <td>1000</td>
+                                <td>83944.00</td>
+                            </tr>
+                            <tr>
+                                <td>25×40</td>
+                                <td>Sanbad Prathidin</td>
+                                <td>Bengali</td>
+                                <td>Kolkata</td>
+                                <td>59.96</td>
+                                <td>23.98</td>
+                                <td>1000</td>
+                                <td>83944.00</td>
+                            </tr>
+                            <tr>
+                                <td>25×40</td>
+                                <td>Sanbad Prathidin</td>
+                                <td>Bengali</td>
+                                <td>Kolkata</td>
+                                <td>59.96</td>
+                                <td>23.98</td>
+                                <td>1000</td>
+                                <td>83944.00</td>
+                            </tr>
+                            <tr>
+                                <td>25×40</td>
+                                <td>Sanbad Prathidin</td>
+                                <td>Bengali</td>
+                                <td>Kolkata</td>
+                                <td>59.96</td>
+                                <td>23.98</td>
+                                <td>1000</td>
+                                <td>83944.00</td>
+                            </tr>
+                            <tr>
+                                <td>25×40</td>
+                                <td>Sanbad Prathidin</td>
+                                <td>Bengali</td>
+                                <td>Kolkata</td>
+                                <td>59.96</td>
+                                <td>23.98</td>
+                                <td>1000</td>
+                                <td>83944.00</td>
+                            </tr>
+                            <tr>
+                                <td>25×40</td>
+                                <td>Sanbad Prathidin</td>
+                                <td>Bengali</td>
+                                <td>Kolkata</td>
+                                <td>59.96</td>
+                                <td>23.98</td>
+                                <td>1000</td>
+                                <td>83944.00</td>
+                            </tr>
+                            <tr>
+                                <td>25×40</td>
+                                <td>Sanbad Prathidin</td>
+                                <td>Bengali</td>
+                                <td>Kolkata</td>
+                                <td>59.96</td>
+                                <td>23.98</td>
+                                <td>1000</td>
+                                <td>83944.00</td>
+                            </tr>
+                            <!-- Financial Details -->
+                            <tr>
+                                <td colspan="5"></td>
+                                <th colspan="2" class="text-center">Amount</th>
+                                <td>83944.00</td>
+                            </tr>
+                            <tr>
+                                <td colspan="5"></td>
+                                <th colspan="2" class="text-center">Agency Comm. 15%</th>
+                                <td>12591.60</td>
+                            </tr>
+                            <tr>
+                                <td colspan="5"></td>
+                                <th colspan="2" class="text-center">Taxable Amount</th>
+                                <td>71352.40</td>
+                            </tr>
+                            <tr>
+                                <td colspan="5"></td>
+                                <th colspan="2" class="text-center">CGST 2.5%</th>
+                                <td>1783.81</td>
+                            </tr>
+                            <tr>
+                                <td colspan="5"></td>
+                                <th colspan="2" class="text-center" >SGST 2.5%</th>
+                                <td>1783.81</td>
+                            </tr>
+                            <tr>
+                                <td colspan="5"></td>
+                                <th colspan="2" class="text-center">Net Total (Round Off)</th>
+                                <td>74920.00</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+
+                <!-- Notes -->
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row notes">
+                            <div class="col">
+                                <p><strong>Note:</strong></p>
+                                <ol>
+                                    <li>The newspaper advertisement should be printed on the publish date newspaper.</li>
+                                    <li>The creative of the given size is attached within the email. If not, then please let us know immediately.</li>
+                                    <li>The advertisement design should be printed exactly as given in the creative PDF.</li>
+                                    <li>If the advertisement size, colour, or quality is not up to the mark, it will affect the payment.</li>
+                                    <li>The advertisement should also be released in the Dark Edition.</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <!-- Footer -->
+                        <div class="row">
+                            <div class="col">
+                                <p><strong>For Neeraj Communication</strong></p>
+                                <div class="rectangle-container">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
         </div>
 
         <!-- Services Tab -->
@@ -272,5 +667,6 @@
 <script src="/js/common.js"></script>
 
 </body>
+
 
 </html>

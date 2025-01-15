@@ -20,3 +20,40 @@
 .uppercase {
     text-transform: uppercase;
 }
+
+.highlight {
+    background-color: rgba(255, 255, 150, 0.75);
+}
+
+
+/*GENERATE RO*/
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.table th, .table td {
+    vertical-align: middle;
+    text-align: center;
+}
+.notes {
+    margin-top: 20px;
+    font-size: 0.9rem;
+}
+.rectangle-container {
+    width: 100%;
+    max-width: 500px; /* Adjust width as needed */
+    height: 100px; /* Adjust height as needed */
+    border: 2px solid #000; /* Add a border for visibility */
+    background-color: #f8f9fa; /* Light background color */
+    padding: 20px; /* Inner padding */
+    margin: 20px auto; /* Center the container */
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1); /* Optional shadow */
+}
+@media print {
+    .no-print {
+        display: none; /* Hides elements with the no-print class when printing */
+    }
+}
+
+

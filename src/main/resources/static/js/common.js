@@ -158,16 +158,30 @@ function getDav(){
     const newspaperName2 = document.getElementById("newspaperName").value.trim();
     const edition = document.getElementById("placeOfPublication").value.trim();
     const language = document.getElementById("language").value.trim();
+    const periodicity = document.getElementById("periodicity").value.trim();
+    const category = document.getElementById("category").value.trim();
+    var url;
+    const newspaperName = decodeHTML(newspaperName2);
 
     // Check if any field is empty
     if (!newspaperName2 || !edition || !language) {
         return;
     }
+    url = `/api/getDavRates?newspaperName=${encodeURIComponent(newspaperName)}&edition=${encodeURIComponent(edition)}&language=${encodeURIComponent(language)}`;
 
-    const newspaperName = decodeHTML(newspaperName2);
+    if(periodicity){
+        var cat = category;
+        if(cat === null || cat === ''){
+            fetchCategory();
+            return;
+        }
+         url = `/api/getDavRates?newspaperName=${encodeURIComponent(newspaperName)}&edition=${encodeURIComponent(edition)}&language=${encodeURIComponent(language)}&periodicity=${encodeURIComponent(periodicity)}&category=${encodeURIComponent(category)}`;
+    }
+
+
 
     // Build the URL with query parameters
-    const url = `/api/getDavRates?newspaperName=${encodeURIComponent(newspaperName)}&edition=${encodeURIComponent(edition)}&language=${encodeURIComponent(language)}`;
+
 
     // Fetch the data from the backend
     fetch(url)
@@ -183,8 +197,15 @@ function getDav(){
             document.getElementById("dav").value = data.toUpperCase();
         })
         .catch(error => {
+
+            alert("As per Provided Data, There are More Than One DAVP Rates Applicable, To Further Narrow Down DAVP Rates, Please Select the Periodicity & Category Highlighted in Form");
+
+            document.getElementById("periodicityDropDown").style.display="block";
+            document.getElementById("categoryDropDown").style.display="block";
+
+
             console.error("Error fetching Dav rates:", error);
-            alert("An error occurred while fetching Dav rates. Please try again.");
+
         });
 
 }
@@ -194,8 +215,11 @@ document.getElementById("newspaperName").addEventListener("change", getDav);
 document.getElementById("stateDropdown").addEventListener("change", getDav);
 document.getElementById("placeOfPublication").addEventListener("change", getDav);
 document.getElementById("language").addEventListener("change", getDav);
+document.getElementById("periodicity").addEventListener("change", getDav);
+document.getElementById("category").addEventListener("change", getDav);
 
 
+// fucntion to disable data
 function disabledFields(){
     document.getElementById("clientName").readOnly = true;
     document.getElementById("clientName").disabled = true;
@@ -225,6 +249,51 @@ function disabledFields(){
     document.getElementById("dateInput").disabled = true;
 }
 
+
+async function submitRoData(rowData) {
+    rowData.color = document.getElementById("color").value.trim();
+    rowData.gstType = document.getElementById("gstType").value.trim();
+
+    console.log("RO Data ", rowData);
+
+    const apiUrl = "/api/submitRoData";
+
+    try {
+        // Use await to handle the fetch request asynchronously
+        const response = await fetch(apiUrl, {
+            method: "POST", // Specify the HTTP method
+            headers: {
+                "Content-Type": "application/json", // Set the request header
+            },
+            body: JSON.stringify(rowData), // Convert the rowData object to JSON
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // Wait for the response text (assuming it's plain text)
+        const message = await response.text();
+        console.log("Received Message:", message);
+
+        // Return appropriate message
+        if (message === "Successfully") {
+            showToast('success', 'Successfully', 'RO Data Saved Successfully', 'top-end', 10000);
+            return message;
+        } else if (message === "Failed") {
+            showToast('error', 'Failed', 'Failed To send Data', 'top-end', 10000);
+            return message;
+        } else {
+            showToast('error', 'Failed', 'Something went wrong, Contact Admin', 'top-end', 10000);
+            return message;
+        }
+    } catch (error) {
+        console.error("Error while submitting data:", error);
+        showToast('error', 'Error', 'Failed to submit data. Check console for details.', 'top-end', 10000);
+        return "Error"; // Explicitly return "Error" to handle failure cases
+    }
+}
+
 function addRow() {
     const tableBody = document.getElementById("tableBody");
     const colorDropdown = document.getElementById("color"); // Use the existing dropdown
@@ -250,7 +319,7 @@ function addRow() {
         return;
     }
 
-    disabledFields();
+
 
     const newRow = document.createElement("tr");
 
@@ -258,7 +327,7 @@ function addRow() {
         const cell = document.createElement("td");
         const input = document.createElement("input");
         input.type = "text";
-        input.className = "form-control";
+        input.className = "form-control uppercase";
         input.value = value;
         input.name = name; // Set the input name dynamically
         input.readOnly = true;
@@ -268,11 +337,11 @@ function addRow() {
 
     const actionBtnCell = document.createElement("td");
     const actionBtn = document.createElement("button");
-    actionBtn.className = "btn btn-primary"; // You can use any class for styling the button
+    actionBtn.className = "btn btn-secondary"; // You can use any class for styling the button
     actionBtn.type = "button"; // You can specify "submit" if you want to submit a form
-    actionBtn.innerText = "Action";
+    actionBtn.innerText = "Submit";
 
-    actionBtn.addEventListener("click", function () {
+    actionBtn.addEventListener("click", async  function () {
         const row = this.closest("tr");
         const cells = row.querySelectorAll("td");
         const rowData = {};
@@ -291,7 +360,25 @@ function addRow() {
             }
         });
 
-        console.log("Row Data:", rowData); // Log the row data as key-value pairs
+        try {
+
+            const message = await submitRoData(rowData); // Await the async operation
+
+            console.log("Successfully Successfully",message);
+            if (message === "Successfully") {
+                cells.forEach((cell) => {
+                    const input = cell.querySelector("input, select, textarea");
+                    if (input) {
+                        input.disabled = true; // Disable the input element
+                    }
+                });
+                this.className="btn btn-success"
+                this.disabled = true; // Disable the button
+                this.textContent = "Data Submitted"; // Update button text
+            }
+        } catch (error) {
+            console.error("Error during submission:", error);
+        }
     });
 
     actionBtnCell.appendChild(actionBtn);
@@ -539,7 +626,70 @@ document.addEventListener("DOMContentLoaded",function (){
     dateInput.value = today;
 })
 
+function fetchCategory(){
+    const newspaperDropdown = document.getElementById('newspaperName');
+    const selectedNewspaper = decodeHTML(newspaperDropdown.value);
 
+    var periodicity = document.getElementById("periodicity").value.trim();
+    var url;
+
+    url = `/api/fetchCategory?newspaperName=${encodeURIComponent(selectedNewspaper)}`;
+
+    if(periodicity){
+        url =`/api/fetchCategory?newspaperName=${encodeURIComponent(selectedNewspaper)}&periodicity=${encodeURIComponent(periodicity)}`;
+    }
+
+    fetch(url)
+        .then(response => response.json())  // Assuming the response is in JSON format
+        .then(categoryData => {
+            const categoryListdropDown = document.getElementById('category');
+            categoryListdropDown.innerHTML='';
+            // Clear the existing options (if any)
+            categoryListdropDown.innerHTML = '<option value="" selected disabled>Select Category</option>';
+
+            console.log("category ",categoryData);
+            // Append the fetched periodicity data as options
+            categoryData.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item;  // Assuming each item has a 'value' property
+                option.textContent = item;  // Assuming each item has a 'label' property
+                categoryListdropDown.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching Category data:', error);
+        });
+
+}
+
+function fetchPeriodicity(){
+    const newspaperDropdown = document.getElementById('newspaperName');
+    const selectedNewspaper = decodeHTML(newspaperDropdown.value);
+
+    let url = `/api/fetchPeriodicity?newspaperName=${encodeURIComponent(selectedNewspaper)}`;
+
+    // Fetch the periodicity data from the API
+    fetch(url)
+        .then(response => response.json())  // Assuming the response is in JSON format
+        .then(periodicityData => {
+            const periodicityDropdown = document.getElementById('periodicity');
+            periodicityDropdown.innerHTML='';
+            // Clear the existing options (if any)
+            periodicityDropdown.innerHTML = '<option value="" selected disabled>Select Periodicity</option>';
+
+            console.log("periodicityData ",periodicityData);
+            // Append the fetched periodicity data as options
+            periodicityData.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item;  // Assuming each item has a 'value' property
+                option.textContent = item;  // Assuming each item has a 'label' property
+                periodicityDropdown.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching periodicity data:', error);
+        });
+}
 
 function fetchLanguage() {
     const newspaperDropdown = document.getElementById('newspaperName');
@@ -557,7 +707,7 @@ function fetchLanguage() {
     if (selectedPublicationPlace) {
         url += `&publicationPlace=${encodeURIComponent(selectedPublicationPlace)}`;
     }
-
+     document.getElementById("dav").value='';
     console.log("API URL:", url);
 
     // Fetch data from the backend
@@ -581,7 +731,8 @@ function fetchLanguage() {
 
 function fetchPublicationName() {
 
-    debugger;
+
+
     const newspaperDropdown = document.getElementById('newspaperName');
     const stateDropdown = document.getElementById('stateDropdown');
     const placeOfPublicationDropdown = document.getElementById('placeOfPublication');
@@ -597,6 +748,8 @@ function fetchPublicationName() {
     if (selectedState) {
         url += `&state=${encodeURIComponent(selectedState)}`;
     }
+
+    document.getElementById("dav").value='';
 
     console.log("API URL:", url);
 
@@ -628,12 +781,17 @@ function fetchStates() {
     // Clear existing state options
     stateDropdown.innerHTML = '<option value="" selected disabled>Select State</option>';
 
+    document.getElementById("periodicityDropDown").style.display="none";
+    document.getElementById("categoryDropDown").style.display="none";
+
+
     console.log("selectedNewspaper:", selectedNewspaper);
 
     // Remove encodeURIComponent and send the raw value directly
     const url = `/api/getState?newspaperName=${selectedNewspaper}`;
 
     console.log("url", url);
+    document.getElementById("dav").value='';
 
     // Fetch states from the backend
     fetch(url)
@@ -658,3 +816,46 @@ function decodeHTML(encodedString) {
     const doc = new DOMParser().parseFromString(encodedString, 'text/html');
     return doc.body.textContent || doc.body.innerText;
 }
+
+
+
+//print function
+function printPage() {
+    window.print(); // Triggers the browser's print dialog
+}
+
+//fetch client Data
+async function fetchAllClientName() {
+    const url = `/api/fetchClientList`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'GET', // Assuming it's a GET request
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const clientList = await response.json(); // Assuming the response is JSON
+        const clientDropdown = document.getElementById('client');
+        clientDropdown.innerHTML = '<option value="" selected disabled>Select the client Name</option>'; // Reset options
+
+        clientList.forEach((client) => {
+            const option = document.createElement('option');
+            option.value = client; // Adjust based on your API response structure
+            option.textContent = client; // Adjust based on your API response structure
+            clientDropdown.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error fetching client list:', error);
+        alert('Failed to fetch client list. Check console for details.');
+    }
+}
+
+
+
+document.addEventListener("DOMContentLoaded",fetchAllClientName);

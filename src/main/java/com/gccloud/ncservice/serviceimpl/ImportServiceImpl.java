@@ -1,12 +1,17 @@
 package com.gccloud.ncservice.serviceimpl;
 
 import com.gccloud.ncservice.entity.NewsPaperMasterRate;
+import com.gccloud.ncservice.entity.RoGenerationData;
 import com.gccloud.ncservice.repository.NewsPaperMasterRateRepository;
 import com.gccloud.ncservice.repository.NewsPaperMasterRateRepository;
+import com.gccloud.ncservice.repository.RoGenerationDataRepository;
 import com.gccloud.ncservice.service.ImportService;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -23,15 +28,19 @@ import java.util.List;
 
 @Service
 @Transactional
+@Slf4j
 public class ImportServiceImpl implements ImportService {
 
     private final NewsPaperMasterRateRepository masterRateRepo;
 
     @Autowired
+    RoGenerationDataRepository roGenerationDataRepository;
+    @Autowired
     public ImportServiceImpl(NewsPaperMasterRateRepository masterRateRepo) {
         this.masterRateRepo = masterRateRepo;
     }
 
+    private static final Logger logger = LoggerFactory.getLogger(ImportServiceImpl.class);
 
     @Override
     public void importData(MultipartFile file) {
@@ -193,6 +202,57 @@ public class ImportServiceImpl implements ImportService {
     @Override
     public List<String> getLanguageByNewspaperAndPublicationPlace(String newspaperName, String publicationPlace) {
         return masterRateRepo.getLanguageByPublication(newspaperName, publicationPlace);
+    }
+
+    @Override
+    public String saveRoData(RoGenerationData roGenerationData) {
+        try{
+
+            roGenerationData.setClientName(roGenerationData.getClientName().toUpperCase());
+            roGenerationData.setNewspaperName(roGenerationData.getNewspaperName().toUpperCase());
+            roGenerationData.setState(roGenerationData.getState().toUpperCase());
+            roGenerationData.setEdition(roGenerationData.getEdition().toUpperCase());
+            roGenerationData.setLanguage(roGenerationData.getLanguage().toUpperCase());
+
+            roGenerationDataRepository.save(roGenerationData);
+
+            return "Successfully";
+
+        }
+        catch(Exception e){
+
+            logger.error("Failed to Save Error :{}",e);
+            return "Failed";
+
+        }
+    }
+
+    @Override
+    public String getDavRatesUsingPeriodicityAndCategory(String newspaperName, String edition, String language, String periodicity, String category) {
+//         Dav Rates with Cateogry and Periodicity
+        return masterRateRepo.getDavRatesWithHelpOfCatandPeriod(newspaperName,edition,language,periodicity,category);
+    }
+
+    @Override
+    public List<String> getPeriodicityByNewPaperName(String newspaperName) {
+
+
+        return masterRateRepo.getPeriodicityList(newspaperName);
+    }
+
+    @Override
+    public List<String> fetchCategoryList(String newspaperName) {
+        return masterRateRepo.getCategoryList(newspaperName);
+    }
+
+    @Override
+    public List<String> fetchCategoryListByPeriodicityName(String newspaperName, String periodicity) {
+        return masterRateRepo.getCategoryListByPeriodicity(newspaperName,periodicity);
+    }
+
+    @Override
+    public List<String> getAllClientNameList() {
+        return masterRateRepo.getAllClientList();
     }
 
 }

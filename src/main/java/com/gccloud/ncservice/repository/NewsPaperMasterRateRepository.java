@@ -30,5 +30,20 @@ public interface NewsPaperMasterRateRepository extends JpaRepository<NewsPaperMa
 
     @Query(value = "SELECT distinct(rate) FROM newspaper  where newspaper_name=?1 AND place_of_publication=?2 AND language =?3;",nativeQuery = true)
     String getDavRates(String newspaperName, String edition, String language);
+
+    @Query(value = "SELECT distinct(rate) FROM newspaper  where newspaper_name=?1 AND place_of_publication=?2 AND language =?3 AND periodicity=?4 AND category=?5 ;",nativeQuery = true)
+    String getDavRatesWithHelpOfCatandPeriod(String newspaperName, String edition, String language, String periodicity, String category);
+
+    @Query(value = "SELECT distinct(periodicity) FROM newspaper  where newspaper_name=?1 order by periodicity asc;",nativeQuery = true)
+    List<String> getPeriodicityList(String newspaperName);
+
+    @Query(value = "SELECT distinct(category) FROM newspaper  where newspaper_name=?1 order by category asc;",nativeQuery = true)
+    List<String> getCategoryList(String newspaperName);
+
+    @Query(value = "SELECT distinct(category) FROM newspaper  where newspaper_name=?1 AND periodicity=?2  order by category asc;",nativeQuery = true)
+    List<String> getCategoryListByPeriodicity(String newspaperName, String periodicity);
+
+    @Query(value = "SELECT DISTINCT(client_name) FROM ro_data ORDER BY client_name ASC",nativeQuery = true)
+    List<String> getAllClientList();
 }
 
