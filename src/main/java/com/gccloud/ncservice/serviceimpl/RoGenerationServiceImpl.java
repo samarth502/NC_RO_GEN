@@ -1,4 +1,4 @@
-package com.gccloud.ncservice.serviceImpl;
+package com.gccloud.ncservice.serviceimpl;
 
 import com.gccloud.ncservice.repository.NewsPaperMasterRateRepository;
 import com.gccloud.ncservice.service.RoGenerationService;

@@ -164,7 +164,7 @@ function getDav(){
     if (!newspaperName2 || !state || !edition || !language) {
         return;
     }
-    debugger;
+
     const newspaperName = decodeHTML(newspaperName2);
 
     // Build the URL with query parameters
@@ -190,10 +190,41 @@ function getDav(){
 
 }
 
+
 document.getElementById("newspaperName").addEventListener("change", getDav);
 document.getElementById("stateDropdown").addEventListener("change", getDav);
 document.getElementById("placeOfPublication").addEventListener("change", getDav);
 document.getElementById("language").addEventListener("change", getDav);
+
+
+function disabledFields(){
+    document.getElementById("clientName").readOnly = true;
+    document.getElementById("clientName").disabled = true;
+
+    document.getElementById("pageNumber").readOnly = true;
+    document.getElementById("pageNumber").disabled = true;
+
+    document.getElementById("newspaperName").readOnly = true;
+    document.getElementById("newspaperName").disabled = true;
+
+    document.getElementById("stateDropdown").readOnly = true;
+    document.getElementById("stateDropdown").disabled = true;
+
+    document.getElementById("placeOfPublication").readOnly = true;
+    document.getElementById("placeOfPublication").disabled = true;
+
+    document.getElementById("language").readOnly = true;
+    document.getElementById("language").disabled = true;
+
+    document.getElementById("dav").readOnly = true;
+    document.getElementById("dav").disabled = true;
+
+    document.getElementById("color").readOnly = true;
+    document.getElementById("color").disabled = true;
+
+    document.getElementById("dateInput").readOnly = true;
+    document.getElementById("dateInput").disabled = true;
+}
 
 function addRow() {
     const tableBody = document.getElementById("tableBody");
@@ -212,6 +243,7 @@ function addRow() {
     const edition = document.getElementById("placeOfPublication").value.trim();
     const language = document.getElementById("language").value.trim();
     const dav = document.getElementById("dav").value.trim();
+    const dateInput = document.getElementById("dateInput").value.trim();
 
     // Check if any field is empty
     if (!clientName || !pageNumber || !newspaperName || !state || !edition || !language || !dav) {
@@ -219,29 +251,50 @@ function addRow() {
         return;
     }
 
+    disabledFields();
 
     const newRow = document.createElement("tr");
 
-    const createReadOnlyCell = (value) => {
+    const createReadOnlyCell = (value, name) => {
         const cell = document.createElement("td");
         const input = document.createElement("input");
         input.type = "text";
         input.className = "form-control";
         input.value = value;
+        input.name = name; // Set the input name dynamically
         input.readOnly = true;
         cell.appendChild(input);
         return cell;
     };
-
 
     const actionBtnCell = document.createElement("td");
     const actionBtn = document.createElement("button");
     actionBtn.className = "btn btn-primary"; // You can use any class for styling the button
     actionBtn.type = "button"; // You can specify "submit" if you want to submit a form
     actionBtn.innerText = "Action";
-    actionBtn.addEventListener("click", function() {
-        alert("Action Button Clicked");
+
+    actionBtn.addEventListener("click", function () {
+        const row = this.closest("tr");
+        const cells = row.querySelectorAll("td");
+        const rowData = {};
+
+        cells.forEach((cell) => {
+            const input = cell.querySelector("input, select, textarea");
+            if (input) {
+                const key = input.name || input.id || "undefined"; // Use `name` as key, fallback to `id`, or a placeholder
+                rowData[key] = input.value; // Store the input value with the key
+            } else {
+                const textContent = cell.textContent.trim();
+                if (textContent) {
+                    const key = "column_" + [...cell.parentNode.children].indexOf(cell); // Generate key for plain text cells
+                    rowData[key] = textContent;
+                }
+            }
+        });
+
+        console.log("Row Data:", rowData); // Log the row data as key-value pairs
     });
+
     actionBtnCell.appendChild(actionBtn);
 
 
@@ -250,7 +303,8 @@ function addRow() {
     roNumberInput.type = "number";
     roNumberInput.className = "form-control";
     roNumberInput.placeholder = "Ro Number";
-    roNumberInput.name = "Ro Number";
+    roNumberInput.name = "roNumber";
+    roNumberInput.id = "roNumber";
     roNumberInput.setAttribute("required","required");
     roNumberCell.appendChild(roNumberInput);
 
@@ -258,38 +312,46 @@ function addRow() {
     const roDateInput = document.createElement("input");
     roDateInput.type = "date";
     roDateInput.className = "form-control";
-    roDateInput.placeholder = "Length";
-    roDateInput.name = "Length";
+    roDateInput.placeholder = "roDate";
+    roDateInput.name = "roDate";
+    roDateInput.id = "roDate";
     roDateInput.setAttribute("required","required");
     roDateCell.appendChild(roDateInput);
 
-    // Create Length input
+    // Create length input
     const lengthCell = document.createElement("td");
     const lengthInput = document.createElement("input");
     lengthInput.type = "number";
     lengthInput.className = "form-control";
-    lengthInput.placeholder = "Length";
-    lengthInput.name = "Length";
+    lengthInput.placeholder = "length";
+    lengthInput.name = "length";
+    lengthInput.id = "length";
+    lengthInput.min = "0";
+    lengthInput.step = "0.01";
     lengthInput.setAttribute("required","required");
     lengthCell.appendChild(lengthInput);
 
-    // Create Length input
+    // Create length input
     const dopCell = document.createElement("td");
     const dopInput = document.createElement("input");
     dopInput.type = "date";
     dopInput.className = "form-control";
-    dopInput.placeholder = "Length";
-    dopInput.name = "Length";
+    dopInput.placeholder = "Date";
+    dopInput.name = "dateOfPublication";
+    dopInput.id = "dateOfPublication";
     dopInput.setAttribute("required","required");
     dopCell.appendChild(dopInput);
 
-    // Create Breadth input
+    // Create breadth input
     const breadthCell = document.createElement("td");
     const breadthInput = document.createElement("input");
     breadthInput.type = "number";
     breadthInput.className = "form-control";
-    breadthInput.placeholder = "Breadth";
-    breadthInput.name = "Breadth";
+    breadthInput.placeholder = "breadth";
+    breadthInput.name = "breadth";
+    breadthInput.id = "breadth";
+    breadthInput.min = "0";
+    breadthInput.step = "0.01";
     breadthInput.setAttribute("required","required");
     breadthCell.appendChild(breadthInput);
 
@@ -300,11 +362,11 @@ function addRow() {
     totalSizeInput.type = "number";
     totalSizeInput.className = "form-control";
     totalSizeInput.placeholder = "Total Size";
-    totalSizeInput.name = "TotalSize";
+    totalSizeInput.name = "totalSize";
+    totalSizeInput.id = "totalSize";
     totalSizeInput.setAttribute("required","required");
     totalSizeInput.readOnly = true; // Make it read-only
     totalSizeCell.appendChild(totalSizeInput);
-
 
 
     const ppNewspaperCell = document.createElement("td");
@@ -313,18 +375,22 @@ function addRow() {
     ppNewspaperInput.className = "form-control";
     ppNewspaperInput.placeholder = "Price to Newspaper";
     ppNewspaperInput.name = "priceToNewsPaper";
+    ppNewspaperInput.id = "priceToNewsPaper";
     ppNewspaperInput.setAttribute("required","required");
     ppNewspaperCell.appendChild(ppNewspaperInput);
 
 
+    // Create and append the amount input field
     const amountCell = document.createElement("td");
     const amountInput = document.createElement("input");
     amountInput.type = "text";
     amountInput.className = "form-control";
     amountInput.placeholder = "Amount";
     amountInput.name = "amount";
+    amountInput.id = "amount";
     amountInput.readOnly = true;
     amountCell.appendChild(amountInput);
+
 
     // Append GST
     const gstCell = document.createElement("td");
@@ -333,6 +399,7 @@ function addRow() {
     gstInput.className = "form-control";
     gstInput.placeholder = "GST";
     gstInput.name = "gst";
+    gstInput.id = "gst";
     gstInput.setAttribute("required", "required");
     gstCell.appendChild(gstInput);
 
@@ -343,6 +410,7 @@ function addRow() {
     netPayableInput.className = "form-control";
     netPayableInput.placeholder = "Net Payable";
     netPayableInput.name = "netPayable";
+    netPayableInput.id = "netPayable";
     netPayableInput.setAttribute("required", "required");
     netPayableCell.appendChild(netPayableInput);
 
@@ -353,6 +421,7 @@ function addRow() {
     emailInput.className = "form-control";
     emailInput.placeholder = "Email ID";
     emailInput.name = "emailId";
+    emailInput.id = "emailId";
     emailInput.setAttribute("required", "required");
     emailCell.appendChild(emailInput);
 
@@ -363,17 +432,43 @@ function addRow() {
     phoneInput.className = "form-control";
     phoneInput.placeholder = "Phone Number";
     phoneInput.name = "phoneNumber";
+    phoneInput.id = "phoneNumber";
     phoneInput.setAttribute("required", "required");
     phoneCell.appendChild(phoneInput);
 
 
-    // Add event listeners to Length and Breadth inputs
-    const updateTotalSize = () => {
+    // Add event listeners to length and breadth inputs
+    const updatetotalSize = () => {
 
+        const davValue = parseFloat(dav) || 0;
+        const colorValue = selectedColor === "Color" ? selectedColor || 0 : 0;
         const length = parseFloat(lengthInput.value) || 0;
         const breadth = parseFloat(breadthInput.value) || 0;
         totalSizeInput.value = length * breadth;
+
+        const totalSize = length * breadth;
+
+        const calculatedAmount = selectedColor === "Color"
+            ? (davValue + parseFloat(extraInput.value)) * totalSize
+            : davValue * totalSize;
+        amountInput.value = calculatedAmount.toFixed(2);
+
+        const totalAmountVal = calculatedAmount;
+
+        var lessForNewsPaper = (totalAmountVal * 0.15)
+
+        ppNewspaperInput.value = (totalAmountVal - lessForNewsPaper).toFixed(2);
+
+        const priceToNewspaper = (totalAmountVal - lessForNewsPaper);
+
+        const gstInputVal = (priceToNewspaper * 0.05);
+
+        gstInput.value = parseFloat(gstInputVal).toFixed(2);
+
+        netPayableInput.value =  (parseFloat(priceToNewspaper) + parseFloat(gstInputVal)).toFixed(2);
+
     };
+
 
     // Create Color cell
     const colorCell = document.createElement("td");
@@ -383,22 +478,26 @@ function addRow() {
     colorCell.appendChild(colorValue);
 
     newRow.appendChild(actionBtnCell);
-    newRow.appendChild(createReadOnlyCell(clientName));
-    newRow.appendChild(createReadOnlyCell(pageNumber));
-    newRow.appendChild(createReadOnlyCell(newspaperName));
-    newRow.appendChild(createReadOnlyCell(state));
-    newRow.appendChild(createReadOnlyCell(edition));
-    newRow.appendChild(createReadOnlyCell(dav));
-    // newRow.appendChild(colorCell);
+    newRow.appendChild(createReadOnlyCell(dateInput, "submissionDate"));
+    newRow.appendChild(createReadOnlyCell(clientName, "clientName"));
+    newRow.appendChild(createReadOnlyCell(pageNumber, "pageNumber"));
+    newRow.appendChild(createReadOnlyCell(newspaperName, "newspaperName"));
+    newRow.appendChild(createReadOnlyCell(state, "state"));
+    newRow.appendChild(createReadOnlyCell(edition, "edition"));
+    newRow.appendChild(createReadOnlyCell(dav, "dav"));
+
+
+
     // If "Color" is selected, add an extra column
     if (selectedColor === "Color") {
         document.getElementById("extraColumnHeader").style.display = 'table-cell';
         const extraCell = document.createElement("td");
-        const extraInput = document.createElement("input");
+        var extraInput = document.createElement("input");
         extraInput.type = "text";
         extraInput.className = "form-control";
         extraInput.placeholder = "40% value";
-        extraInput.name = "Extra Info";
+        extraInput.name = "colorPercentage";
+        extraInput.id = "colorPer";
 
         const davValue = Number(dav);
 
@@ -409,11 +508,9 @@ function addRow() {
         extraCell.appendChild(extraInput);
         newRow.appendChild(extraCell);
 
-
     }
-
-
-    newRow.appendChild(createReadOnlyCell(language));
+    newRow.appendChild(createReadOnlyCell(language, "language"));
+    // newRow.appendChild(createReadOnlyCell(language));
     newRow.appendChild(roNumberCell);
     newRow.appendChild(roDateCell);
     newRow.appendChild(dopCell);
@@ -427,29 +524,23 @@ function addRow() {
     newRow.appendChild(emailCell);
     newRow.appendChild(phoneCell);
 
-
-
-
     // Add the new row to the table body
     tableBody.appendChild(newRow);
 
-
-    lengthInput.addEventListener("input", updateTotalSize);
-    breadthInput.addEventListener("input", updateTotalSize);
-
+    lengthInput.addEventListener("input", updatetotalSize);
+    breadthInput.addEventListener("input", updatetotalSize);
 
 
 }
 
-
-
-window.onload = function() {
+// function to set Date
+document.addEventListener("DOMContentLoaded",function (){
     const dateInput = document.getElementById('dateInput');
     const today = new Date().toISOString().split('T')[0]; // Get the current date in YYYY-MM-DD format
     dateInput.value = today;
+})
 
 
-};
 
 function fetchLanguage() {
 

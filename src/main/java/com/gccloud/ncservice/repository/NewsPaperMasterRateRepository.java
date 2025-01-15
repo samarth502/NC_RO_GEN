@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface NewsPaperMasterRateRepository extends JpaRepository<NewsPaperMasterRate, Long> {
 
-    @Query(value = "SELECT newspaper_name FROM newspaper order by newspaper_name asc;",nativeQuery = true)
+    @Query(value = "SELECT distinct(newspaper_name) FROM newspaper  order by newspaper_name asc;",nativeQuery = true)
     List<String> getAllNewsPaperName();
 
     @Query(value = "SELECT distinct(state) FROM newspaper  where newspaper_name=?1 order by state asc;",nativeQuery = true)
