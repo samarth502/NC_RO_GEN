@@ -22,8 +22,11 @@ public class PageController {
     @GetMapping(path = "/portal")
     public String goToPortalPage(Model theModel) {
 
+        List<String> clientList = roGenerationService.fetchTheClientList();
+
         List<String> newsPaperName = roGenerationService.getNewsPaperName();
         theModel.addAttribute("newsPaperName",newsPaperName);
+        theModel.addAttribute("clientList",clientList);
 
         return "uploadMaster";
     }

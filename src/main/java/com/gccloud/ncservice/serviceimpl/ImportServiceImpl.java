@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -309,4 +310,35 @@ public class ImportServiceImpl implements ImportService {
                 .orElseThrow(() -> new ResourceNotFoundException("RO Data not found for ID: " + id));
 
     }
+    @Override
+    public List<String> getAllClientNameListBySubmissionDate(String submissionDate) {
+        return masterRateRepo.getAllClientListBySubmissionDate(submissionDate);
+    }
+
+    @Override
+    public List<String> getAllRoDateBySubmissionDateAndClient(String submissionDate, String clientName) {
+        return masterRateRepo.getAllRoDateByClientNameAndSubmissionDate(submissionDate,clientName);
+    }
+
+    @Override
+    public List<String> getAllNewspaperNameByClientRoDateSubmissionDate(String submissionDate, String clientName, String roDates) {
+        return masterRateRepo.getNewspaperListBySubmitdateRoDateAndClientName(submissionDate,clientName,roDates);
+    }
+
+    @Override
+    public List<Map<String,Object>> getReleaseOrderData(String submissionDate, String clientName, String roDates, String newspaper, String publishcationDate) {
+        return masterRateRepo.getDataForReleaseOrder(submissionDate,clientName,roDates,newspaper,publishcationDate);
+    }
+
+    @Override
+    public List<String> getPublishDate(String submissionDate, String clientName, String roDates, String newspaperName) {
+        return masterRateRepo.getPublishcationDate(submissionDate,clientName,roDates,newspaperName);
+    }
+
+    @Override
+    public List<Map<String, Object>> getClientData() {
+        return clientRepository.fetchClientData();
+    }
+
+
 }

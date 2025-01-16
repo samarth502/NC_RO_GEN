@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @Component
 public interface ImportService {
@@ -52,4 +53,17 @@ public interface ImportService {
     RoGenerationData getRoDataById(Long id);
 
 
+
+    List<String> getAllClientNameListBySubmissionDate(String submissionDate);
+
+    List<String> getAllRoDateBySubmissionDateAndClient(String submissionDate, String clientName);
+
+    List<String> getAllNewspaperNameByClientRoDateSubmissionDate(String submissionDate, String clientName, String roDates);
+
+    List<Map<String,Object>> getReleaseOrderData(String submissionDate, String clientName, String roDates, String newspaper, String publishcationDate);
+
+    List<String> getPublishDate(String submissionDate, String clientName, String roDates, String newspaperName);
+
+
+    List<Map<String, Object>> getClientData();
 }

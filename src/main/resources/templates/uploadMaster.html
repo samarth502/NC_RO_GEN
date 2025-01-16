@@ -22,6 +22,7 @@
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 
 </head>
+
 <body>
 <!-- Header Section -->
 <header class="bg-primary text-white py-3">
@@ -151,7 +152,11 @@
                                 <div class="col-md-3 mb-3">
                                     <div class="input-group">
                                         <span class="input-group-text">Client Name</span>
-                                        <input type="text" class="form-control uppercase" name="clientName" id="clientName" required>
+<!--                                        <input type="text" class="form-control uppercase" name="clientName" id="clientName" required>-->
+                                        <select class="form-select" name="clientName" id="clientName" required>
+                                            <option value="" selected disabled>Select Newspaper</option>
+                                            <option th:each="name : ${clientList}" th:value="${name}" th:text="${name}"></option>
+                                        </select>
                                     </div>
                                 </div>
 
@@ -273,8 +278,11 @@
                             <th rowspan="2">State</th>
                             <th rowspan="2">Edition</th>
                             <th rowspan="2">DAVP Rates<br> per sq cm <br>in Rs</th>
+                            <!--                            <th rowspan="2">Color</th>-->
                             <th rowspan="2" id="extraColumnHeader" style="display: none;">Colour <br>40% Extra</th>
                             <th rowspan="2">Language</th>
+
+
                             <th rowspan="2">RO Number</th>
                             <th rowspan="2">RO Date</th>
                             <th rowspan="2">Date of <br>publication</th>
@@ -286,10 +294,14 @@
                             <th rowspan="2">New Payable</th>
                             <th rowspan="2">Email id</th>
                             <th rowspan="2">Phone Number</th>
+
+
+
                         </tr>
                         <tr>
                             <th>Length <br>cm</th>
                             <th>Breadth <br>cm</th>
+
                         </tr>
                         </thead>
                         <tbody id="tableBody">
@@ -363,7 +375,7 @@
                                 <div class="col-md-3 mb-3">
                                     <div class="input-group">
                                         <span class="input-group-text">Client Short Form</span>
-                                        <input type="text" class="form-control" name="clientShortForm" id="cShort" required>
+                                        <input type="text" class="form-control uppercase" name="clientShortForm" id="cShort" required>
                                     </div>
                                 </div>
 
@@ -373,6 +385,16 @@
                                 </div>
                             </div>
                         </form>
+
+                        <table id="clientData" class="table table-bordered table-stripped table-responsive" style="width: 100% !important">
+                            <thead>
+                                <th>Client Name</th>
+                                <th>Client ID</th>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -381,32 +403,73 @@
         <!-- Generate RO For Release Tab -->
         <div class="tab-pane fade" id="generateRO" role="tabpanel">
             <h2>Generate RO For Release</h2>
-            <div class="d-flex no-print">
-                <div class="col-md-3 mb-3" >
-                    <div class="input-group">
-                        <span class="input-group-text">client Name</span>
-                        <select class="form-select" name="client" id="client">
-                            <option value="" selected disabled >Select the client Name</option>
-                        </select>
-                    </div>
-                </div>
+            <div class="row">
 
-                <div class="col-md-3 mb-3 no-print" >
+                <div class="col-md-3 mb-3" >
                     <div class="input-group">
                         <span class="input-group-text">Submission Date</span>
                         <input type="date" class="form-control" id="SubmissionDate" name="SubmissionDate" />
                     </div>
                 </div>
 
-                <div class="col-md-3 mb-3 no-print" >
+                <div class="col-md-3 mb-3" >
                     <div class="input-group">
-                        <span class="input-group-text">RO Date</span>
-                        <input type="date" class="form-control" id="roDate" name="SubmissionDate" />
+                        <span class="input-group-text">client Name</span>
+                        <select class="form-select" name="clientNameForGenerateRO" id="clientNameForGenerateRO">
+<!--                            dynamically append client name from js -->
+                        </select>
                     </div>
                 </div>
+
+                <div class="col-md-3 mb-3" >
+                    <div class="input-group">
+                        <span class="input-group-text">RO Date</span>
+
+                        <select class="form-select" name="roDate" id="roDateForGenrateRo">
+                            <!--                            dynamically append client name from js -->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-3" >
+                    <div class="input-group">
+                        <span class="input-group-text">Newspaper Name</span>
+                        <select class="form-select" name="newspaperNameForGenRo" id="newspaperNameForGenRo">
+                            <!--                            dynamically append client name from js -->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-3" >
+                    <div class="input-group">
+                        <span class="input-group-text">Publish Date</span>
+                        <select class="form-select" name="publishcationDate" id="publishcationDate">
+                            <!--                            dynamically append client name from js -->
+                        </select>
+                    </div>
+                </div>
+
+                <!-- GST -->
+                <div class="col-md-3 mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text">GST Applicable</span>
+                        <select class="form-select" required name="generateGst" id="generateGst">
+                            <option value="" selected disabled>Select GST</option>
+                            <option value="IGST">IGST</option>
+                            <option value="CGST">CGST</option>
+                        </select>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="container-fluid mt-4">
+
+            <button class="btn btn-primary" onclick="showRo()">Generate Ro</button>
+            <button class="btn btn-primary" onclick="printPage()">Print Page</button>
+
+
+
+            <div class="container-fluid my-4 p-3 shadow card" style="display: none" id="RoContainer">
                 <!-- Header -->
                 <div class="row">
                     <div class="col-6">
@@ -421,7 +484,7 @@
                         <p>9, Apex Chamber 19, Vidhan Sabha Marg, Lucknow-226001</p>
                         <p>Tele: 0522-4025804 | Mobile: 08318523654, 09838893800</p>
                         <p>Email: <a href="mailto:pankaj@neerajcommunication.com">pankaj@neerajcommunication.com</a></p>
-                        <button class="btn btn-primary no-print w-25" onclick="printPage()">Print Page</button>
+
                     </div>
                     <div class="col-6 d-flex justify-content-end w-50">
                         <table class="table details-table table-bordered w-50">
@@ -454,7 +517,7 @@
                             <h6>RO No.</h6>
                         </div>
                         <div>
-                            <p id="roNumber">NC/GOVT/DIPR/2025/996</p>
+                            <p id="genRoNumber"></p>
                         </div>
                     </div>
                     <div class="d-flex align-items-center justify-content-between w-50">
@@ -462,7 +525,7 @@
                             <h6>R.O. Date</h6>
                         </div>
                         <div>
-                            <p id="roDates">13-Jan-25</p>
+                            <p id="clientRoDate"></p>
                         </div>
                     </div>
                     <div class="d-flex align-items-center justify-content-between w-50">
@@ -470,7 +533,7 @@
                             <h6>Publish Date</h6>
                         </div>
                         <div>
-                            <p id="publishDate">14-Jan-25</p>
+                            <p id="dateOfpublish"></p>
                         </div>
                     </div>
                     <div class="d-flex align-items-center justify-content-between w-50">
@@ -478,7 +541,7 @@
                             <h6>Client</h6>
                         </div>
                         <div>
-                            <p id="clientInfo">INFORMATION DEPARTMENT UP</p>
+                            <p id="roClientName">INFORMATION DEPARTMENT UP</p>
                         </div>
                     </div>
                     <div class="d-flex align-items-center justify-content-between w-50">
@@ -486,14 +549,14 @@
                             <h6>Page Position</h6>
                         </div>
                         <div>
-                            <p id="pagePosition">Page 2 or Page 3</p>
+                            <p id="pagePosition"></p>
                         </div>
                     </div>
                 </div>
 
                 <div class="row mt-4">
                     <div class="col">
-                        <table class="table table-bordered">
+                        <table id="generateRoTable" class="table table-bordered">
                             <thead class="table-light">
                             <tr>
                                 <th>Size in C.M.</th>
@@ -507,216 +570,47 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>25×40</td>
-                                <td>Sanbad Prathidin</td>
-                                <td>Bengali</td>
-                                <td>Kolkata</td>
-                                <td>59.96</td>
-                                <td>23.98</td>
-                                <td>1000</td>
-                                <td>83944.00</td>
-                            </tr>
-                            <tr>
-                                <td>25×40</td>
-                                <td>Sanbad Prathidin</td>
-                                <td>Bengali</td>
-                                <td>Kolkata</td>
-                                <td>59.96</td>
-                                <td>23.98</td>
-                                <td>1000</td>
-                                <td>83944.00</td>
-                            </tr>
-                            <tr>
-                                <td>25×40</td>
-                                <td>Sanbad Prathidin</td>
-                                <td>Bengali</td>
-                                <td>Kolkata</td>
-                                <td>59.96</td>
-                                <td>23.98</td>
-                                <td>1000</td>
-                                <td>83944.00</td>
-                            </tr>
-                            <tr>
-                                <td>25×40</td>
-                                <td>Sanbad Prathidin</td>
-                                <td>Bengali</td>
-                                <td>Kolkata</td>
-                                <td>59.96</td>
-                                <td>23.98</td>
-                                <td>1000</td>
-                                <td>83944.00</td>
-                            </tr>
-                            <tr>
-                                <td>25×40</td>
-                                <td>Sanbad Prathidin</td>
-                                <td>Bengali</td>
-                                <td>Kolkata</td>
-                                <td>59.96</td>
-                                <td>23.98</td>
-                                <td>1000</td>
-                                <td>83944.00</td>
-                            </tr>
-                            <tr>
-                                <td>25×40</td>
-                                <td>Sanbad Prathidin</td>
-                                <td>Bengali</td>
-                                <td>Kolkata</td>
-                                <td>59.96</td>
-                                <td>23.98</td>
-                                <td>1000</td>
-                                <td>83944.00</td>
-                            </tr>
-                            <tr>
-                                <td>25×40</td>
-                                <td>Sanbad Prathidin</td>
-                                <td>Bengali</td>
-                                <td>Kolkata</td>
-                                <td>59.96</td>
-                                <td>23.98</td>
-                                <td>1000</td>
-                                <td>83944.00</td>
-                            </tr>
-                            <tr>
-                                <td>25×40</td>
-                                <td>Sanbad Prathidin</td>
-                                <td>Bengali</td>
-                                <td>Kolkata</td>
-                                <td>59.96</td>
-                                <td>23.98</td>
-                                <td>1000</td>
-                                <td>83944.00</td>
-                            </tr>
-                            <tr>
-                                <td>25×40</td>
-                                <td>Sanbad Prathidin</td>
-                                <td>Bengali</td>
-                                <td>Kolkata</td>
-                                <td>59.96</td>
-                                <td>23.98</td>
-                                <td>1000</td>
-                                <td>83944.00</td>
-                            </tr>
-                            <tr>
-                                <td>25×40</td>
-                                <td>Sanbad Prathidin</td>
-                                <td>Bengali</td>
-                                <td>Kolkata</td>
-                                <td>59.96</td>
-                                <td>23.98</td>
-                                <td>1000</td>
-                                <td>83944.00</td>
-                            </tr>
-                            <tr>
-                                <td>25×40</td>
-                                <td>Sanbad Prathidin</td>
-                                <td>Bengali</td>
-                                <td>Kolkata</td>
-                                <td>59.96</td>
-                                <td>23.98</td>
-                                <td>1000</td>
-                                <td>83944.00</td>
-                            </tr>
-                            <tr>
-                                <td>25×40</td>
-                                <td>Sanbad Prathidin</td>
-                                <td>Bengali</td>
-                                <td>Kolkata</td>
-                                <td>59.96</td>
-                                <td>23.98</td>
-                                <td>1000</td>
-                                <td>83944.00</td>
-                            </tr>
-                            <tr>
-                                <td>25×40</td>
-                                <td>Sanbad Prathidin</td>
-                                <td>Bengali</td>
-                                <td>Kolkata</td>
-                                <td>59.96</td>
-                                <td>23.98</td>
-                                <td>1000</td>
-                                <td>83944.00</td>
-                            </tr>
-                            <tr>
-                                <td>25×40</td>
-                                <td>Sanbad Prathidin</td>
-                                <td>Bengali</td>
-                                <td>Kolkata</td>
-                                <td>59.96</td>
-                                <td>23.98</td>
-                                <td>1000</td>
-                                <td>83944.00</td>
-                            </tr>
-                            <tr>
-                                <td>25×40</td>
-                                <td>Sanbad Prathidin</td>
-                                <td>Bengali</td>
-                                <td>Kolkata</td>
-                                <td>59.96</td>
-                                <td>23.98</td>
-                                <td>1000</td>
-                                <td>83944.00</td>
-                            </tr>
-                            <tr>
-                                <td>25×40</td>
-                                <td>Sanbad Prathidin</td>
-                                <td>Bengali</td>
-                                <td>Kolkata</td>
-                                <td>59.96</td>
-                                <td>23.98</td>
-                                <td>1000</td>
-                                <td>83944.00</td>
-                            </tr>
-                            <tr>
-                                <td>25×40</td>
-                                <td>Sanbad Prathidin</td>
-                                <td>Bengali</td>
-                                <td>Kolkata</td>
-                                <td>59.96</td>
-                                <td>23.98</td>
-                                <td>1000</td>
-                                <td>83944.00</td>
-                            </tr>
-                            <tr>
-                                <td>25×40</td>
-                                <td>Sanbad Prathidin</td>
-                                <td>Bengali</td>
-                                <td>Kolkata</td>
-                                <td>59.96</td>
-                                <td>23.98</td>
-                                <td>1000</td>
-                                <td>83944.00</td>
-                            </tr>
+
+
+
+                            </tbody>
+                            <tbody>
                             <!-- Financial Details -->
                             <tr>
                                 <td colspan="5"></td>
                                 <th colspan="2" class="text-center">Amount</th>
-                                <td>83944.00</td>
+                                <td id="finTotalAmount"> </td>
                             </tr>
                             <tr>
                                 <td colspan="5"></td>
                                 <th colspan="2" class="text-center">Agency Comm. 15%</th>
-                                <td>12591.60</td>
+                                <td id="finAgencyCommission"> </td>
                             </tr>
                             <tr>
                                 <td colspan="5"></td>
                                 <th colspan="2" class="text-center">Taxable Amount</th>
-                                <td>71352.40</td>
+                                <td id="finPaperPublisihAmount"> </td>
                             </tr>
-                            <tr>
+                            <tr id="cgst1">
                                 <td colspan="5"></td>
                                 <th colspan="2" class="text-center">CGST 2.5%</th>
-                                <td>1783.81</td>
+                                <td id="finCgst"> </td>
                             </tr>
-                            <tr>
+                            <tr id="cgst2">
                                 <td colspan="5"></td>
                                 <th colspan="2" class="text-center" >SGST 2.5%</th>
-                                <td>1783.81</td>
+                                <td id="finSgst"> </td>
+                            </tr>
+
+                            <tr id="Icgst">
+                                <td colspan="5"></td>
+                                <th colspan="2" class="text-center" >ICGST 5%</th>
+                                <td id="finicgst"> </td>
                             </tr>
                             <tr>
                                 <td colspan="5"></td>
                                 <th colspan="2" class="text-center">Net Total (Round Off)</th>
-                                <td>74920.00</td>
+                                <td id="finTotalPayAbleAmount"> </td>
                             </tr>
                             </tbody>
                         </table>
@@ -789,263 +683,6 @@
 <!-- Self Defined JavaScript -->
 <script src="/js/common.js"></script>
 
-<!--js For View Master-->
-<script>
-    // Function to load data into the table when the "View Master" tab is clicked
-    document.getElementById('viewMasterTab').addEventListener('click', function () {
-        fetchNewspaperData(); // Fetch data when the tab is clicked
-    });
-
-    // Function to fetch data from backend and populate the table
-    function fetchNewspaperData() {
-        // Show the loader and hide the table
-        document.getElementById('loader').style.display = 'block';
-        document.getElementById('tableContainer').style.display = 'none';
-
-        // Perform AJAX request to fetch the data from the backend
-        fetch('/api/newspapersMaster')
-            .then(response => response.json())  // Assuming the response is a JSON array
-            .then(data => {
-                console.log(data);  // Log the response to check its structure
-                let tableBody = document.getElementById('viewTable');
-                tableBody.innerHTML = ''; // Clear the table body before adding new rows
-
-                // Check if 'data' is an array
-                if (Array.isArray(data)) {
-                    // Loop through the fetched data and append rows to the table
-                    data.forEach(newspaper => {
-                        let row = document.createElement('tr');
-                        row.innerHTML = `
-                        <td>${newspaper.newspaperCode}</td>
-                        <td>${newspaper.newspaperName}</td>
-                        <td>${newspaper.lastRenewedDate}</td>
-                        <td>${newspaper.state}</td>
-                        <td>${newspaper.placeOfPublication}</td>
-                        <td>${newspaper.language}</td>
-                        <td>${newspaper.periodicity}</td>
-                        <td>${newspaper.category}</td>
-                        <td>${newspaper.regularityStatus}</td>
-                        <td>${newspaper.circulationBase}</td>
-                        <td>${newspaper.circulation}</td>
-                        <td>${newspaper.rate}</td>
-                    `;
-                        tableBody.appendChild(row);
-                    });
-
-                    // Destroy the previous DataTable instance (if exists)
-                    if ($.fn.dataTable.isDataTable('#newspapersTable')) {
-                        $('#newspapersTable').DataTable().destroy();
-                    }
-
-                    // Reinitialize DataTable with paging disabled
-                    $('#newspapersTable').DataTable({
-                        "paging": false,
-                        "searching": true,
-                        "info": true
-                    });
-
-                    // Hide the loader and show the table
-                    document.getElementById('loader').style.display = 'none';
-                    document.getElementById('tableContainer').style.display = 'block';
-                } else {
-                    console.error("Received data is not an array:", data);
-                    document.getElementById('loader').style.display = 'none';
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching newspaper data:', error);
-                document.getElementById('loader').style.display = 'none';
-            });
-    }
-
-</script>
-
-<!--js For Preview RO -->
-<script>
-    // Function to load data into the table when the "View Master" tab is clicked
-    document.getElementById('previewRoTab').addEventListener('click', function () {
-        fetchRoData(); // Fetch data when the tab is clicked
-    });
-
-    // Function to fetch data from backend and populate the table
-    function fetchRoData() {
-        // Show the loader and hide the table
-        document.getElementById('loader').style.display = 'block';
-        document.getElementById('previewRoContainer').style.display = 'none';
-
-        // Perform AJAX request to fetch the data from the backend
-        fetch('/api/fetchRoData')
-            .then(response => response.json())  // Assuming the response is a JSON array
-            .then(data => {
-                console.log(data);  // Log the response to check its structure
-                let tableBody = document.getElementById('previewRoTbody');
-                tableBody.innerHTML = ''; // Clear the table body before adding new rows
-
-                // Check if 'data' is an array
-                if (Array.isArray(data)) {
-                    // Loop through the fetched data and append rows to the table
-                    data.forEach(roData => {
-                        let row = document.createElement('tr');
-                        row.innerHTML = `
-                          <td>
-                            <button class="btn btn-primary" onclick="navigateToForm(${roData.id})">Release Ro</button>
-                        </td>
-                            <td>${roData.dateOfPublication || ''}</td>
-                                <td>${roData.roDate || ''}</td>
-                                    <td>${roData.newspaperName || ''}</td>
-    <td>${roData.submissionDate || ''}</td>
-    <td>${roData.clientName || ''}</td>
-    <td>${roData.pageNumber || ''}</td>
-    <td>${roData.state || ''}</td>
-    <td>${roData.edition || ''}</td>
-    <td>${roData.dav || ''}</td>
-    <td>${roData.color || ''}</td>
-    <td>${roData.language || ''}</td>
-    <td>${roData.roNumber || ''}</td>
-    <td>${roData.length || ''}</td>
-    <td>${roData.breadth || ''}</td>
-    <td>${roData.totalSize || ''}</td>
-    <td>${roData.amount || ''}</td>
-    <td>${roData.priceToNewsPaper || ''}</td>
-    <td>${roData.gst || ''}</td>
-    <td>${roData.netPayable || ''}</td>
-    <td>${roData.emailId || ''}</td>
-    <td>${roData.phoneNumber || ''}</td>
-`;
-                        tableBody.appendChild(row);
-
-                    });
-
-                    // Destroy the previous DataTable instance (if exists)
-                    if ($.fn.dataTable.isDataTable('#previewRoTable')) {
-                        $('#previewRoTable').DataTable().destroy();
-                    }
-
-                    // Reinitialize DataTable with paging disabled
-                    $('#previewRoTable').DataTable({
-                        "paging": false,
-                        "searching": true,
-                        "info": true
-                    });
-
-                    // Hide the loader and show the table
-                    document.getElementById('loader').style.display = 'none';
-                    document.getElementById('previewRoContainer').style.display = 'block';
-                } else {
-                    console.error("Received data is not an array:", data);
-                    document.getElementById('loader').style.display = 'none';
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching newspaper data:', error);
-                document.getElementById('loader').style.display = 'none';
-            });
-    }
-
-    // Function to navigate to the "Create RO" tab and pre-fill the data
-    function navigateToForm(id) {
-        const createRoTab = new bootstrap.Tab(document.querySelector('a[href="#generateRO"]'));
-        createRoTab.show();
-
-        // Fetch the data by ID and pre-fill the form
-        fetch(`/api/getRoDataById/${id}`)
-            .then(response => response.json())
-            .then(data => {
-
-                console.log("Prefilled Data ",data);
-
-                    // // Prefill the form fields with the fetched data
-                    document.getElementById('client').value = data.clientName || '';
-                    document.getElementById('SubmissionDate').value = data.submissionDate || '';
-                    document.getElementById('roDate').value = data.roDate || '';
-
-                document.getElementById('roNumber').textContent = data.roNumber || '';
-                document.getElementById('roDates').textContent = data.roDate || '';
-                document.getElementById('publishDate').textContent = data.dateOfPublication || '';
-                document.getElementById('clientInfo').textContent = data.clientName || '';
-                document.getElementById('pagePosition').textContent = data.pageNumber || '';
-
-            })
-            .catch(error => {
-                console.error('Error fetching data for pre-filling:', error);
-            });
-    }
-
-</script>
-
-<!--Add Client-->
-<script>
-    document.getElementById('submitBtn').addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent the default form submission
-
-        // Collect form data
-        const clientName = document.getElementById('cName').value;
-        const clientShortForm = document.getElementById('cShort').value;
-
-        // Check if the fields are not empty
-        if (clientName && clientShortForm) {
-            // Create an object with the data
-            const clientData = {
-                clientName: clientName,
-                clientShortForm: clientShortForm
-            };
-
-            // Show a loader or disable the submit button while submitting
-            document.getElementById('submitBtn').disabled = true;
-
-            // Send data to the backend API
-            fetch('/api/addClient', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(clientData)
-            })
-                .then(response => response.text()) // Get the response as plain text
-                .then(message => {
-                    // Handle the response message from the backend
-                    console.log(message);  // Log the message to check its content
-
-                    if (message === 'Client Added Successfully') {
-                        // Success message using SweetAlert2
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Client Added!',
-                            text: message,
-                            confirmButtonText: 'OK'
-                        });
-
-                        // Optionally, clear the form
-                        document.getElementById('addClientForm').reset();
-                    } else {
-                        // Error message using SweetAlert2
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: message,
-                            confirmButtonText: 'Try Again'
-                        });
-                    }
-
-                    // Re-enable the submit button
-                    document.getElementById('submitBtn').disabled = false;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById('submitBtn').disabled = false;
-                });
-        } else {
-            // If fields are empty, show an alert using SweetAlert2
-            Swal.fire({
-                icon: 'warning',
-                title: 'Incomplete Form',
-                text: 'Please fill in all fields.',
-                confirmButtonText: 'OK'
-            });
-        }
-    });
-
-</script>
 
 </body>
 </html>

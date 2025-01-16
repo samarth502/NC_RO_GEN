@@ -177,6 +177,58 @@ public class ApiController {
         return clientList;
     }
 
+//    get client name by Submission date
+    @GetMapping("/getClientNameForSubmissionDate/{submissionDate}")
+    public List<String> getClientNameBySubmissionDate(@PathVariable String submissionDate){
+
+        System.out.println("submissionDate "+ submissionDate);
+
+        List<String> clientList = importService.getAllClientNameListBySubmissionDate(submissionDate);
+        return clientList;
+
+    }
+
+//    GET  RO Date Using Submission Date and Client Name
+    @GetMapping("/getRoDates/{submissionDate}/{clientName}")
+    public List<String> getRoDatesBySubmissionAndClientName(@PathVariable String submissionDate, @PathVariable String clientName){
+
+        List<String> roDates = importService.getAllRoDateBySubmissionDateAndClient(submissionDate,clientName);
+        return roDates;
+
+    }
+
+
+    //    GET newspaper name by  RO Date , Submission Date and Client Name
+    @GetMapping("/getNewspaperName/{submissionDate}/{clientName}/{roDates}")
+    public List<String> getNewsPaperNamebyClientSubmissionDateRODate(@PathVariable String submissionDate, @PathVariable String clientName, @PathVariable String roDates){
+
+        List<String> newspaperList = importService.getAllNewspaperNameByClientRoDateSubmissionDate(submissionDate,clientName,roDates);
+        return newspaperList;
+
+    }
+
+    //    GET newspaper name by  RO Date , Submission Date and Client Name
+    @GetMapping("/getPublishCationDate/{submissionDate}/{clientName}/{roDates}/{newspaperName}")
+    public List<String> getPublishDate(@PathVariable String submissionDate,
+                                                                     @PathVariable String clientName,
+                                                                     @PathVariable String roDates,
+                                                                     @PathVariable String newspaperName){
+
+        List<String> publishDateList = importService.getPublishDate(submissionDate,clientName,roDates,newspaperName);
+        return publishDateList;
+
+    }
+
+
+    //    GET all release Order Data
+    @GetMapping("/getReleaseOrder/{submissionDate}/{clientName}/{roDates}/{newspaper}/{publishcationDate}")
+    public List<Map<String,Object>> getDataForReleaseOrder(@PathVariable String submissionDate, @PathVariable String clientName, @PathVariable String roDates, @PathVariable String newspaper, @PathVariable String publishcationDate){
+
+        List<Map<String,Object>> releaseOrderData = importService.getReleaseOrderData(submissionDate,clientName,roDates,newspaper,publishcationDate);
+        return releaseOrderData;
+
+    }
+
 
     @GetMapping("/newspapersMaster")
     public List<NewsPaperMasterRate> fetchNewsPapersMaster(){
@@ -210,5 +262,13 @@ public class ApiController {
 
         return importService.getRoDataById(id);
     }
+
+    // Endpoint to fetch RO data by ID
+    @GetMapping("/getClientFullData")
+    public List<Map<String,Object>> getClientData() {
+
+        return importService.getClientData();
+    }
+
 
 }

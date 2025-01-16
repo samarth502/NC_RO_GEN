@@ -11,6 +11,8 @@ public class Client {
     private Long id;
 
     private String clientName;
+
+    @Column(unique = true)
     private String clientShortForm;
 
     // Default constructor

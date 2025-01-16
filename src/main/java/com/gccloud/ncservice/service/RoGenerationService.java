@@ -9,4 +9,5 @@ public interface RoGenerationService {
 
     List<String> getNewsPaperName();
 
+    List<String> fetchTheClientList();
 }
