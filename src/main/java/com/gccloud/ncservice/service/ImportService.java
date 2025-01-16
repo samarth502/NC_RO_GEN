@@ -1,5 +1,6 @@
 package com.gccloud.ncservice.service;
 
+import com.gccloud.ncservice.entity.Client;
 import com.gccloud.ncservice.entity.NewsPaperMasterRate;
 import com.gccloud.ncservice.entity.RoGenerationData;
 import com.gccloud.ncservice.entity.RoGenerationData;
@@ -38,4 +39,17 @@ public interface ImportService {
     List<String> fetchCategoryListByPeriodicityName(String newspaperName, String periodicity);
 
     List<String> getAllClientNameList();
+
+    List<NewsPaperMasterRate> fetchNewsPapersMaster();
+
+
+    String saveClient(Client client);
+
+
+    List<RoGenerationData> fetchRoData();
+
+
+    RoGenerationData getRoDataById(Long id);
+
+
 }

@@ -1,5 +1,6 @@
 package com.gccloud.ncservice.serviceimpl;
 
+import com.gccloud.ncservice.entity.NewsPaperMasterRate;
 import com.gccloud.ncservice.repository.NewsPaperMasterRateRepository;
 import com.gccloud.ncservice.service.RoGenerationService;
 import org.springframework.beans.factory.annotation.Autowired;

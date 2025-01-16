@@ -10,6 +10,7 @@ function hideLoader() {
     loader.style.display = 'none'; // Hide the loader
 }
 
+
 // File upload event listener with loader integration
 document.getElementById('fileUploadForm').addEventListener('submit', function (event) {
     event.preventDefault(); // Prevent form submission

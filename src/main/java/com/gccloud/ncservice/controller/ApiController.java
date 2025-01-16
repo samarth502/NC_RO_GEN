@@ -1,5 +1,6 @@
 package com.gccloud.ncservice.controller;
 
+import com.gccloud.ncservice.entity.Client;
 import com.gccloud.ncservice.entity.NewsPaperMasterRate;
 import com.gccloud.ncservice.entity.RoGenerationData;
 import com.gccloud.ncservice.service.ImportService;
@@ -176,5 +177,38 @@ public class ApiController {
         return clientList;
     }
 
+
+    @GetMapping("/newspapersMaster")
+    public List<NewsPaperMasterRate> fetchNewsPapersMaster(){
+
+        List<NewsPaperMasterRate> newsPaperMasterRates = importService.fetchNewsPapersMaster();
+
+        return newsPaperMasterRates;
+    }
+
+
+    @PostMapping("/addClient")
+    public String addClient(@RequestBody Client client){
+
+        String message = importService.saveClient(client);
+
+        return message;
+    }
+
+
+    @GetMapping("/fetchRoData")
+    public List<RoGenerationData> fetchRoData(){
+
+        List<RoGenerationData> roGenerationData = importService.fetchRoData();
+
+        return roGenerationData;
+    }
+
+    // Endpoint to fetch RO data by ID
+    @GetMapping("/getRoDataById/{id}")
+    public RoGenerationData getRoDataById(@PathVariable Long id) {
+
+        return importService.getRoDataById(id);
+    }
 
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,8 +12,16 @@
 
     <link rel="stylesheet" href="/css/common.css">
 
-</head>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
 
+    <!-- jQuery (required by DataTables) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+</head>
 <body>
 <!-- Header Section -->
 <header class="bg-primary text-white py-3">
@@ -35,9 +43,24 @@
                 <li class="nav-item">
                     <a class="nav-link text-dark active" data-bs-toggle="tab" href="#uploadRates" role="tab">Upload New Master Rates</a>
                 </li>
+
+                <!-- Navigation Tab for "View Master" -->
+                <li class="nav-item">
+                    <a class="nav-link text-dark" id="viewMasterTab" data-bs-toggle="tab" href="#viewRates" role="tab">View Master</a>
+                </li>
+
                 <li class="nav-item">
                     <a class="nav-link text-dark" data-bs-toggle="tab" href="#createRo" role="tab">Create RO</a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-dark" id="previewRoTab" data-bs-toggle="tab" href="#previewRo" role="tab">Preview RO</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-dark" data-bs-toggle="tab" href="#addClient" role="tab">Add Client</a>
+                </li>
+
                 <li class="nav-item">
                     <a class="nav-link text-dark" data-bs-toggle="tab" href="#generateRO" role="tab">Generate RO For Release</a>
                 </li>
@@ -73,6 +96,38 @@
                     <thead></thead>
                     <tbody></tbody>
                 </table>
+            </div>
+        </div>
+
+        <!-- View Master Content -->
+        <div class="tab-pane fade" id="viewRates" role="tabpanel">
+            <div class="container-fluid">
+                <h2>View Master</h2>
+
+                <!-- Table (Initially hidden) -->
+                <div id="tableContainer" style="display: none;">
+                    <table class="table table-sm table-responsive table-bordered table-striped" style="width: 100% !important;" id="newspapersTable">
+                        <thead>
+                        <tr>
+                            <th>News Paper Code</th>
+                            <th>News Paper Name</th>
+                            <th>Last Renewed Date</th>
+                            <th>State</th>
+                            <th>Place Of Publication</th>
+                            <th>Language</th>
+                            <th>Periodicity</th>
+                            <th>Category</th>
+                            <th>Regularity Status</th>
+                            <th>Circulation Base</th>
+                            <th>Circulation</th>
+                            <th>Rate</th>
+                        </tr>
+                        </thead>
+                        <tbody id="viewTable">
+                        <!-- Data will be filled here dynamically -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -218,11 +273,8 @@
                             <th rowspan="2">State</th>
                             <th rowspan="2">Edition</th>
                             <th rowspan="2">DAVP Rates<br> per sq cm <br>in Rs</th>
-                            <!--                            <th rowspan="2">Color</th>-->
                             <th rowspan="2" id="extraColumnHeader" style="display: none;">Colour <br>40% Extra</th>
                             <th rowspan="2">Language</th>
-
-
                             <th rowspan="2">RO Number</th>
                             <th rowspan="2">RO Date</th>
                             <th rowspan="2">Date of <br>publication</th>
@@ -234,14 +286,10 @@
                             <th rowspan="2">New Payable</th>
                             <th rowspan="2">Email id</th>
                             <th rowspan="2">Phone Number</th>
-
-
-
                         </tr>
                         <tr>
                             <th>Length <br>cm</th>
                             <th>Breadth <br>cm</th>
-
                         </tr>
                         </thead>
                         <tbody id="tableBody">
@@ -251,6 +299,81 @@
                     <button type="button" class="btn btn-primary mb-3" onclick="addRow()">Add Row</button>
 
 
+                </div>
+            </div>
+        </div>
+
+        <!-- Preview RO-->
+        <div class="tab-pane fade" id="previewRo" role="tabpanel">
+            <div class="container-fluid">
+                <h2>Preview RO</h2>
+                <div>
+                    <div id="previewRoContainer" style="display: none;">
+                    <table class="table table-sm table-responsive table-bordered table-striped" id="previewRoTable" style="width: 100% !important;">
+                        <thead>
+                        <tr>
+                            <th>Action</th>
+                            <th>Date of Publication</th>
+                            <th>RO Date</th>
+                            <th>Newspaper Name</th>
+                            <th>Submission Date</th>
+                            <th>Client Name</th>
+                            <th>Page Number</th>
+                            <th>State</th>
+                            <th>Edition</th>
+                            <th>DAVP Rates per sq cm in Rs</th>
+                            <th>Colour 40% Extra</th>
+                            <th>Language</th>
+                            <th>RO Number</th>
+                            <th>Length (cm)</th>
+                            <th>Breadth (cm)</th>
+                            <th>Size in cm²</th>
+                            <th>Total Amount Rs</th>
+                            <th>Price to Newspaper</th>
+                            <th>GST Amount</th>
+                            <th>Net Payable</th>
+                            <th>Email ID</th>
+                            <th>Phone Number</th>
+                        </tr>
+                        <tbody id="previewRoTbody">
+                        <!-- Rows will be dynamically added here -->
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Client-->
+        <div class="tab-pane fade" id="addClient" role="tabpanel">
+            <div class="container-fluid">
+                <h2>Add Client</h2>
+                <div>
+                    <div class="container-fluid">
+                        <form action="/addClient" method="POST" id="addClientForm">
+                            <div class="row">
+                                <!-- Client Name -->
+                                <div class="col-md-3 mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text">Client Name</span>
+                                        <input type="text" class="form-control uppercase" name="clientName" id="cName" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text">Client Short Form</span>
+                                        <input type="text" class="form-control" name="clientShortForm" id="cShort" required>
+                                    </div>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div class="col-md-3 mb-3">
+                                    <button type="submit" id="submitBtn" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -331,7 +454,7 @@
                             <h6>RO No.</h6>
                         </div>
                         <div>
-                            <p>NC/GOVT/DIPR/2025/996</p>
+                            <p id="roNumber">NC/GOVT/DIPR/2025/996</p>
                         </div>
                     </div>
                     <div class="d-flex align-items-center justify-content-between w-50">
@@ -339,7 +462,7 @@
                             <h6>R.O. Date</h6>
                         </div>
                         <div>
-                            <p>13-Jan-25</p>
+                            <p id="roDates">13-Jan-25</p>
                         </div>
                     </div>
                     <div class="d-flex align-items-center justify-content-between w-50">
@@ -347,7 +470,7 @@
                             <h6>Publish Date</h6>
                         </div>
                         <div>
-                            <p>14-Jan-25</p>
+                            <p id="publishDate">14-Jan-25</p>
                         </div>
                     </div>
                     <div class="d-flex align-items-center justify-content-between w-50">
@@ -355,7 +478,7 @@
                             <h6>Client</h6>
                         </div>
                         <div>
-                            <p>INFORMATION DEPARTMENT UP</p>
+                            <p id="clientInfo">INFORMATION DEPARTMENT UP</p>
                         </div>
                     </div>
                     <div class="d-flex align-items-center justify-content-between w-50">
@@ -363,7 +486,7 @@
                             <h6>Page Position</h6>
                         </div>
                         <div>
-                            <p>Page 2 or Page 3</p>
+                            <p id="pagePosition">Page 2 or Page 3</p>
                         </div>
                     </div>
                 </div>
@@ -647,12 +770,12 @@
         </div>
     </div>
 </div>
+
 <div id="loader" style="display: none;">
     <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Loading...</span>
     </div>
 </div>
-
 
 <!-- Bootstrap 5.3 JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
@@ -666,7 +789,263 @@
 <!-- Self Defined JavaScript -->
 <script src="/js/common.js"></script>
 
+<!--js For View Master-->
+<script>
+    // Function to load data into the table when the "View Master" tab is clicked
+    document.getElementById('viewMasterTab').addEventListener('click', function () {
+        fetchNewspaperData(); // Fetch data when the tab is clicked
+    });
+
+    // Function to fetch data from backend and populate the table
+    function fetchNewspaperData() {
+        // Show the loader and hide the table
+        document.getElementById('loader').style.display = 'block';
+        document.getElementById('tableContainer').style.display = 'none';
+
+        // Perform AJAX request to fetch the data from the backend
+        fetch('/api/newspapersMaster')
+            .then(response => response.json())  // Assuming the response is a JSON array
+            .then(data => {
+                console.log(data);  // Log the response to check its structure
+                let tableBody = document.getElementById('viewTable');
+                tableBody.innerHTML = ''; // Clear the table body before adding new rows
+
+                // Check if 'data' is an array
+                if (Array.isArray(data)) {
+                    // Loop through the fetched data and append rows to the table
+                    data.forEach(newspaper => {
+                        let row = document.createElement('tr');
+                        row.innerHTML = `
+                        <td>${newspaper.newspaperCode}</td>
+                        <td>${newspaper.newspaperName}</td>
+                        <td>${newspaper.lastRenewedDate}</td>
+                        <td>${newspaper.state}</td>
+                        <td>${newspaper.placeOfPublication}</td>
+                        <td>${newspaper.language}</td>
+                        <td>${newspaper.periodicity}</td>
+                        <td>${newspaper.category}</td>
+                        <td>${newspaper.regularityStatus}</td>
+                        <td>${newspaper.circulationBase}</td>
+                        <td>${newspaper.circulation}</td>
+                        <td>${newspaper.rate}</td>
+                    `;
+                        tableBody.appendChild(row);
+                    });
+
+                    // Destroy the previous DataTable instance (if exists)
+                    if ($.fn.dataTable.isDataTable('#newspapersTable')) {
+                        $('#newspapersTable').DataTable().destroy();
+                    }
+
+                    // Reinitialize DataTable with paging disabled
+                    $('#newspapersTable').DataTable({
+                        "paging": false,
+                        "searching": true,
+                        "info": true
+                    });
+
+                    // Hide the loader and show the table
+                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('tableContainer').style.display = 'block';
+                } else {
+                    console.error("Received data is not an array:", data);
+                    document.getElementById('loader').style.display = 'none';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching newspaper data:', error);
+                document.getElementById('loader').style.display = 'none';
+            });
+    }
+
+</script>
+
+<!--js For Preview RO -->
+<script>
+    // Function to load data into the table when the "View Master" tab is clicked
+    document.getElementById('previewRoTab').addEventListener('click', function () {
+        fetchRoData(); // Fetch data when the tab is clicked
+    });
+
+    // Function to fetch data from backend and populate the table
+    function fetchRoData() {
+        // Show the loader and hide the table
+        document.getElementById('loader').style.display = 'block';
+        document.getElementById('previewRoContainer').style.display = 'none';
+
+        // Perform AJAX request to fetch the data from the backend
+        fetch('/api/fetchRoData')
+            .then(response => response.json())  // Assuming the response is a JSON array
+            .then(data => {
+                console.log(data);  // Log the response to check its structure
+                let tableBody = document.getElementById('previewRoTbody');
+                tableBody.innerHTML = ''; // Clear the table body before adding new rows
+
+                // Check if 'data' is an array
+                if (Array.isArray(data)) {
+                    // Loop through the fetched data and append rows to the table
+                    data.forEach(roData => {
+                        let row = document.createElement('tr');
+                        row.innerHTML = `
+                          <td>
+                            <button class="btn btn-primary" onclick="navigateToForm(${roData.id})">Release Ro</button>
+                        </td>
+                            <td>${roData.dateOfPublication || ''}</td>
+                                <td>${roData.roDate || ''}</td>
+                                    <td>${roData.newspaperName || ''}</td>
+    <td>${roData.submissionDate || ''}</td>
+    <td>${roData.clientName || ''}</td>
+    <td>${roData.pageNumber || ''}</td>
+    <td>${roData.state || ''}</td>
+    <td>${roData.edition || ''}</td>
+    <td>${roData.dav || ''}</td>
+    <td>${roData.color || ''}</td>
+    <td>${roData.language || ''}</td>
+    <td>${roData.roNumber || ''}</td>
+    <td>${roData.length || ''}</td>
+    <td>${roData.breadth || ''}</td>
+    <td>${roData.totalSize || ''}</td>
+    <td>${roData.amount || ''}</td>
+    <td>${roData.priceToNewsPaper || ''}</td>
+    <td>${roData.gst || ''}</td>
+    <td>${roData.netPayable || ''}</td>
+    <td>${roData.emailId || ''}</td>
+    <td>${roData.phoneNumber || ''}</td>
+`;
+                        tableBody.appendChild(row);
+
+                    });
+
+                    // Destroy the previous DataTable instance (if exists)
+                    if ($.fn.dataTable.isDataTable('#previewRoTable')) {
+                        $('#previewRoTable').DataTable().destroy();
+                    }
+
+                    // Reinitialize DataTable with paging disabled
+                    $('#previewRoTable').DataTable({
+                        "paging": false,
+                        "searching": true,
+                        "info": true
+                    });
+
+                    // Hide the loader and show the table
+                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('previewRoContainer').style.display = 'block';
+                } else {
+                    console.error("Received data is not an array:", data);
+                    document.getElementById('loader').style.display = 'none';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching newspaper data:', error);
+                document.getElementById('loader').style.display = 'none';
+            });
+    }
+
+    // Function to navigate to the "Create RO" tab and pre-fill the data
+    function navigateToForm(id) {
+        const createRoTab = new bootstrap.Tab(document.querySelector('a[href="#generateRO"]'));
+        createRoTab.show();
+
+        // Fetch the data by ID and pre-fill the form
+        fetch(`/api/getRoDataById/${id}`)
+            .then(response => response.json())
+            .then(data => {
+
+                console.log("Prefilled Data ",data);
+
+                    // // Prefill the form fields with the fetched data
+                    document.getElementById('client').value = data.clientName || '';
+                    document.getElementById('SubmissionDate').value = data.submissionDate || '';
+                    document.getElementById('roDate').value = data.roDate || '';
+
+                document.getElementById('roNumber').textContent = data.roNumber || '';
+                document.getElementById('roDates').textContent = data.roDate || '';
+                document.getElementById('publishDate').textContent = data.dateOfPublication || '';
+                document.getElementById('clientInfo').textContent = data.clientName || '';
+                document.getElementById('pagePosition').textContent = data.pageNumber || '';
+
+            })
+            .catch(error => {
+                console.error('Error fetching data for pre-filling:', error);
+            });
+    }
+
+</script>
+
+<!--Add Client-->
+<script>
+    document.getElementById('submitBtn').addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Collect form data
+        const clientName = document.getElementById('cName').value;
+        const clientShortForm = document.getElementById('cShort').value;
+
+        // Check if the fields are not empty
+        if (clientName && clientShortForm) {
+            // Create an object with the data
+            const clientData = {
+                clientName: clientName,
+                clientShortForm: clientShortForm
+            };
+
+            // Show a loader or disable the submit button while submitting
+            document.getElementById('submitBtn').disabled = true;
+
+            // Send data to the backend API
+            fetch('/api/addClient', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(clientData)
+            })
+                .then(response => response.text()) // Get the response as plain text
+                .then(message => {
+                    // Handle the response message from the backend
+                    console.log(message);  // Log the message to check its content
+
+                    if (message === 'Client Added Successfully') {
+                        // Success message using SweetAlert2
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Client Added!',
+                            text: message,
+                            confirmButtonText: 'OK'
+                        });
+
+                        // Optionally, clear the form
+                        document.getElementById('addClientForm').reset();
+                    } else {
+                        // Error message using SweetAlert2
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: message,
+                            confirmButtonText: 'Try Again'
+                        });
+                    }
+
+                    // Re-enable the submit button
+                    document.getElementById('submitBtn').disabled = false;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('submitBtn').disabled = false;
+                });
+        } else {
+            // If fields are empty, show an alert using SweetAlert2
+            Swal.fire({
+                icon: 'warning',
+                title: 'Incomplete Form',
+                text: 'Please fill in all fields.',
+                confirmButtonText: 'OK'
+            });
+        }
+    });
+
+</script>
+
 </body>
-
-
 </html>

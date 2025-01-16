@@ -1,7 +1,9 @@
 package com.gccloud.ncservice.serviceimpl;
 
+import com.gccloud.ncservice.entity.Client;
 import com.gccloud.ncservice.entity.NewsPaperMasterRate;
 import com.gccloud.ncservice.entity.RoGenerationData;
+import com.gccloud.ncservice.repository.ClientRepository;
 import com.gccloud.ncservice.repository.NewsPaperMasterRateRepository;
 import com.gccloud.ncservice.repository.NewsPaperMasterRateRepository;
 import com.gccloud.ncservice.repository.RoGenerationDataRepository;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,6 +38,11 @@ public class ImportServiceImpl implements ImportService {
 
     @Autowired
     RoGenerationDataRepository roGenerationDataRepository;
+
+    @Autowired
+    ClientRepository clientRepository;
+
+
     @Autowired
     public ImportServiceImpl(NewsPaperMasterRateRepository masterRateRepo) {
         this.masterRateRepo = masterRateRepo;
@@ -255,4 +263,50 @@ public class ImportServiceImpl implements ImportService {
         return masterRateRepo.getAllClientList();
     }
 
+    @Override
+    public List<NewsPaperMasterRate> fetchNewsPapersMaster() {
+
+        List<NewsPaperMasterRate> newsPaperMasterRates = masterRateRepo.findAll();
+
+        return newsPaperMasterRates;
+
+    }
+
+    @Override
+    public String saveClient(Client client) {
+
+        try{
+
+            client.setClientName(client.getClientName().toUpperCase());
+            client.setClientShortForm(client.getClientShortForm().toUpperCase());
+
+            clientRepository.save(client);
+
+            return "Client Added Successfully";
+
+        }
+        catch(Exception e){
+
+            logger.error("Failed to Save Error :{}",e);
+            return "Failed";
+
+        }
+    }
+
+    @Override
+    public List<RoGenerationData> fetchRoData() {
+
+        List<RoGenerationData> roGenerationData = roGenerationDataRepository.findAll();
+
+        return roGenerationData;
+
+    }
+
+    @Override
+    public RoGenerationData getRoDataById(Long id) {
+
+        return roGenerationDataRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("RO Data not found for ID: " + id));
+
+    }
 }
