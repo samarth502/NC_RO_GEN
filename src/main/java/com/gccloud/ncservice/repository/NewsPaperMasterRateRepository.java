@@ -44,23 +44,5 @@ public interface NewsPaperMasterRateRepository extends JpaRepository<NewsPaperMa
     @Query(value = "SELECT distinct(category) FROM newspaper  where newspaper_name=?1 AND periodicity=?2  order by category asc;",nativeQuery = true)
     List<String> getCategoryListByPeriodicity(String newspaperName, String periodicity);
 
-    @Query(value = "SELECT DISTINCT(client_name) FROM ro_data ORDER BY client_name ASC",nativeQuery = true)
-    List<String> getAllClientList();
-
-
-    @Query(value = "SELECT DISTINCT(client_name) FROM ro_data WHERE submission_date=?1 ORDER BY client_name ASC",nativeQuery = true)
-    List<String> getAllClientListBySubmissionDate(String submissionDate);
-
-    @Query(value = " SELECT DISTINCT(ro_date) FROM ro_data WHERE submission_date=?1 AND client_name=?2 ORDER BY ro_date ASC ;",nativeQuery = true)
-    List<String> getAllRoDateByClientNameAndSubmissionDate(String submissionDate, String clientName);
-
-    @Query(value = " SELECT DISTINCT(newspaper_name) FROM ro_data WHERE submission_date=?1 AND client_name=?2 AND ro_date=?3 ORDER BY newspaper_name ASC ;",nativeQuery = true)
-    List<String> getNewspaperListBySubmitdateRoDateAndClientName(String submissionDate, String clientName, String roDates);
-
-    @Query(value = " SELECT * FROM ro_data WHERE submission_date=?1 AND client_name=?2 AND ro_date=?3 AND newspaper_name=?4 AND date_of_publication=?5 ORDER BY state ASC  ;",nativeQuery = true)
-    List<Map<String,Object>> getDataForReleaseOrder(String submissionDate, String clientName, String roDates, String newspaper, String publishcationDate);
-
-    @Query(value = " SELECT DISTINCT(date_of_publication) FROM ro_data WHERE submission_date=?1 AND client_name=?2 AND ro_date=?3 AND newspaper_name=?4 ORDER BY date_of_publication ASC  ;",nativeQuery = true)
-    List<String> getPublishcationDate(String submissionDate, String clientName, String roDates, String newspaperName);
 }
 

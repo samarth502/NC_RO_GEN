@@ -43,15 +43,11 @@ public interface ImportService {
 
     List<NewsPaperMasterRate> fetchNewsPapersMaster();
 
-
     String saveClient(Client client);
-
 
     List<RoGenerationData> fetchRoData();
 
-
     RoGenerationData getRoDataById(Long id);
-
 
 
     List<String> getAllClientNameListBySubmissionDate(String submissionDate);
@@ -60,7 +56,7 @@ public interface ImportService {
 
     List<String> getAllNewspaperNameByClientRoDateSubmissionDate(String submissionDate, String clientName, String roDates);
 
-    List<Map<String,Object>> getReleaseOrderData(String submissionDate, String clientName, String roDates, String newspaper, String publishcationDate);
+    List<Map<String,Object>> getReleaseOrderData(String submissionDate, String clientName, String roDates, String newspaper, String publishcationDate,String generateRoNumber);
 
     List<String> getPublishDate(String submissionDate, String clientName, String roDates, String newspaperName);
 
@@ -69,5 +65,9 @@ public interface ImportService {
 
     void deleteClientById(Long id);
 
+    List<Map<String, Object>> getClientID(String clientName);
 
+    String getLastDigitRoNumber(String clientName, String submissionDate);
+
+    List<String> getListOfRoForGeneration(String submissionDate, String clientName, String roDates, String newspaperName, String publishDate);
 }

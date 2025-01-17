@@ -1,5 +1,6 @@
 package com.gccloud.ncservice.controller;
 
+import com.gccloud.ncservice.DTO.GenerateRoDTO;
 import com.gccloud.ncservice.entity.Client;
 import com.gccloud.ncservice.entity.NewsPaperMasterRate;
 import com.gccloud.ncservice.entity.RoGenerationData;
@@ -181,7 +182,7 @@ public class ApiController {
     @GetMapping("/getClientNameForSubmissionDate/{submissionDate}")
     public List<String> getClientNameBySubmissionDate(@PathVariable String submissionDate){
 
-        System.out.println("submissionDate "+ submissionDate);
+//        System.out.println("submissionDate "+ submissionDate);
 
         List<String> clientList = importService.getAllClientNameListBySubmissionDate(submissionDate);
         return clientList;
@@ -219,13 +220,18 @@ public class ApiController {
 
     }
 
+        @PostMapping("/getReleaseOrder")
+    public List<Map<String,Object>> getDataForReleaseOrder(@RequestBody GenerateRoDTO generateRoDTO){
 
-    //    GET all release Order Data
-    @GetMapping("/getReleaseOrder/{submissionDate}/{clientName}/{roDates}/{newspaper}/{publishcationDate}")
-    public List<Map<String,Object>> getDataForReleaseOrder(@PathVariable String submissionDate, @PathVariable String clientName, @PathVariable String roDates, @PathVariable String newspaper, @PathVariable String publishcationDate){
+            String  submissionDate=generateRoDTO.getSubmissionDate();
+            String  clientName = generateRoDTO.getClientName();
+            String  roDates = generateRoDTO.getRoDates();
+            String  newspaper = generateRoDTO.getNewspaper();
+            String  publishcationDate = generateRoDTO.getPublicationDate();
+            String  generateRoNumber = generateRoDTO.getGenerateRoNumber();
 
-        List<Map<String,Object>> releaseOrderData = importService.getReleaseOrderData(submissionDate,clientName,roDates,newspaper,publishcationDate);
-        return releaseOrderData;
+        return importService.getReleaseOrderData(submissionDate,clientName,roDates,newspaper,publishcationDate,generateRoNumber);
+
 
     }
 
@@ -275,6 +281,34 @@ public class ApiController {
     public List<Map<String,Object>> getClientData() {
 
         return importService.getClientData();
+    }
+
+    // Endpoint to fetch RO data by ID
+    @GetMapping("/getClientID/{clientName}")
+    public List<Map<String,Object>> getClientId(@PathVariable String clientName) {
+
+        return importService.getClientID(clientName);
+    }
+
+
+//    last Digit Ro Number
+    @GetMapping("/getSpeicalRoNumber/{clientName}/{submissionDate}")
+    public String getLastDigitRoNumber(@PathVariable String clientName,@PathVariable String submissionDate) {
+
+        return importService.getLastDigitRoNumber(clientName,submissionDate);
+    }
+
+    //    GET newspaper name by  RO Date , Submission Date and Client Name
+    @GetMapping("/getRoList/{submissionDate}/{clientName}/{roDates}/{newspaperName}/{publishDate}")
+    public List<String> getListOfRo(@PathVariable String submissionDate,
+                                       @PathVariable String clientName,
+                                       @PathVariable String roDates,
+                                       @PathVariable String newspaperName,
+                                       @PathVariable String publishDate
+                                       ){
+
+        return importService.getListOfRoForGeneration(submissionDate,clientName,roDates,newspaperName,publishDate);
+
     }
 
 

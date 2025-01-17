@@ -5,7 +5,6 @@ import com.gccloud.ncservice.entity.NewsPaperMasterRate;
 import com.gccloud.ncservice.entity.RoGenerationData;
 import com.gccloud.ncservice.repository.ClientRepository;
 import com.gccloud.ncservice.repository.NewsPaperMasterRateRepository;
-import com.gccloud.ncservice.repository.NewsPaperMasterRateRepository;
 import com.gccloud.ncservice.repository.RoGenerationDataRepository;
 import com.gccloud.ncservice.service.ImportService;
 import com.opencsv.CSVReader;
@@ -17,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,7 +25,6 @@ import java.util.List;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -162,6 +159,22 @@ public class ImportServiceImpl implements ImportService {
         return newspaper;
     }
 
+    @Override
+    public List<Map<String, Object>> getClientID(String clientName) {
+        return clientRepository.fetClientSpecialID(clientName);
+    }
+
+    @Override
+    public String getLastDigitRoNumber(String clientName, String submissionDate) {
+        return roGenerationDataRepository.getRoLastDigitNumber(clientName,submissionDate);
+    }
+
+    @Override
+    public List<String> getListOfRoForGeneration(String submissionDate, String clientName, String roDates, String newspaperName, String publishDate) {
+
+        return roGenerationDataRepository.getRoList(submissionDate,clientName,roDates,newspaperName,publishDate);
+    }
+
 
     private String getCellValue(Cell cell) {
         if (cell == null) {
@@ -200,6 +213,7 @@ public class ImportServiceImpl implements ImportService {
 
     @Override
     public String getDavRates(String newspaperName, String edition, String language) {
+
         return masterRateRepo.getDavRates(newspaperName,edition,language);
     }
 
@@ -261,7 +275,7 @@ public class ImportServiceImpl implements ImportService {
 
     @Override
     public List<String> getAllClientNameList() {
-        return masterRateRepo.getAllClientList();
+        return roGenerationDataRepository.getAllClientList();
     }
 
     @Override
@@ -312,27 +326,27 @@ public class ImportServiceImpl implements ImportService {
     }
     @Override
     public List<String> getAllClientNameListBySubmissionDate(String submissionDate) {
-        return masterRateRepo.getAllClientListBySubmissionDate(submissionDate);
+        return roGenerationDataRepository.getAllClientListBySubmissionDate(submissionDate);
     }
 
     @Override
     public List<String> getAllRoDateBySubmissionDateAndClient(String submissionDate, String clientName) {
-        return masterRateRepo.getAllRoDateByClientNameAndSubmissionDate(submissionDate,clientName);
+        return roGenerationDataRepository.getAllRoDateByClientNameAndSubmissionDate(submissionDate,clientName);
     }
 
     @Override
     public List<String> getAllNewspaperNameByClientRoDateSubmissionDate(String submissionDate, String clientName, String roDates) {
-        return masterRateRepo.getNewspaperListBySubmitdateRoDateAndClientName(submissionDate,clientName,roDates);
+        return roGenerationDataRepository.getNewspaperListBySubmitdateRoDateAndClientName(submissionDate,clientName,roDates);
     }
 
     @Override
-    public List<Map<String,Object>> getReleaseOrderData(String submissionDate, String clientName, String roDates, String newspaper, String publishcationDate) {
-        return masterRateRepo.getDataForReleaseOrder(submissionDate,clientName,roDates,newspaper,publishcationDate);
+    public List<Map<String,Object>> getReleaseOrderData(String submissionDate, String clientName, String roDates, String newspaper, String publishcationDate,String generateRoNumber) {
+        return roGenerationDataRepository.getDataForReleaseOrder(submissionDate,clientName,roDates,newspaper,publishcationDate,generateRoNumber);
     }
 
     @Override
     public List<String> getPublishDate(String submissionDate, String clientName, String roDates, String newspaperName) {
-        return masterRateRepo.getPublishcationDate(submissionDate,clientName,roDates,newspaperName);
+        return roGenerationDataRepository.getPublishcationDate(submissionDate,clientName,roDates,newspaperName);
     }
 
     @Override

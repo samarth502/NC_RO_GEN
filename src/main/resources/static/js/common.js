@@ -150,6 +150,9 @@ function showToast(icon, title, message, position = 'top-end', timer = 10000) {
     });
 }
 
+
+
+
 function getDav(){
 
     const newspaperName2 = document.getElementById("newspaperName").value.trim();
@@ -189,7 +192,7 @@ function getDav(){
             return response.text();
         })
         .then(data => {
-            console.log("Dav Rate fetched:", data);
+            //console.log("Dav Rate fetched:", data);
             // Append the data in the Dav input field
             document.getElementById("dav").value = data.toUpperCase();
         })
@@ -206,6 +209,7 @@ function getDav(){
         });
 
 }
+
 
 document.getElementById("newspaperName").addEventListener("change", getDav);
 document.getElementById("stateDropdown").addEventListener("change", getDav);
@@ -249,8 +253,34 @@ function disabledFields(){
 async function submitRoData(rowData) {
     rowData.color = document.getElementById("color").value.trim();
     rowData.gstType = document.getElementById("gstType").value.trim();
+    rowData.pageNumber = document.getElementById("pageNumber").value.trim();
 
-    console.log("RO Data ", rowData);
+
+    const roNumber = document.getElementById("roNumber").value.trim();
+    const submissionDate = document.getElementById("dateInput").value.trim();
+    const clientName = document.getElementById("clientName").value.trim();
+    const newspaperName = document.getElementById("newspaperName").value.trim();
+    const state = document.getElementById("stateDropdown").value.trim();
+    const edition = document.getElementById("placeOfPublication").value.trim();
+    const dav = document.getElementById("dav").value.trim();
+    const language = document.getElementById("language").value.trim();
+
+    // Check if any value is null or empty
+    if (!roNumber || !submissionDate || !clientName || !newspaperName || !state || !edition || !dav || !language) {
+        alert("Please fill all the required fields.");
+        return;
+    }
+
+    rowData.roNumber = roNumber;
+    rowData.submissionDate = submissionDate;
+    rowData.clientName = clientName;
+    rowData.newspaperName = newspaperName;
+    rowData.state = state;
+    rowData.edition = edition;
+    rowData.dav = dav;
+    rowData.language = language;
+
+    //console.log("RO Data ", rowData);
 
     const apiUrl = "/api/submitRoData";
 
@@ -270,7 +300,7 @@ async function submitRoData(rowData) {
 
         // Wait for the response text (assuming it's plain text)
         const message = await response.text();
-        console.log("Received Message:", message);
+        //console.log("Received Message:", message);
 
         // Return appropriate message
         if (message === "Successfully") {
@@ -292,8 +322,18 @@ async function submitRoData(rowData) {
 
 function addRow() {
     const tableBody = document.getElementById("tableBody");
+    const roNumber = document.getElementById("roNumber").value.trim();
     const colorDropdown = document.getElementById("color"); // Use the existing dropdown
     const selectedColor = colorDropdown.value; // Get the selected value
+
+    // // pattern to check ro number
+    const pattern = /^[A-Za-z0-9]+\/[A-Za-z0-9]+\/[A-Za-z0-9-]+\/[0-9]{4}\/([0-9]+)$/;
+    const match = roNumber.match(pattern);
+
+    if (!match) {
+        alert("Generated RO number is Wrong please check the RO number")
+        return ;
+    }
 
     if(colorDropdown.value ===""){
         alert("Please select Color format");
@@ -358,9 +398,11 @@ function addRow() {
 
         try {
 
+
+
             const message = await submitRoData(rowData); // Await the async operation
 
-            console.log("Successfully Successfully",message);
+            //console.log("Successfully Successfully",message);
             if (message === "Successfully") {
                 cells.forEach((cell) => {
                     const input = cell.querySelector("input, select, textarea");
@@ -504,7 +546,7 @@ function addRow() {
     emailInput.placeholder = "Email ID";
     emailInput.name = "emailId";
     emailInput.id = "emailId";
-    emailInput.setAttribute("required", "required");
+    emailInput.setAttribute("required", "true");
     emailCell.appendChild(emailInput);
 
 // Append Phone Number
@@ -560,13 +602,13 @@ function addRow() {
     colorCell.appendChild(colorValue);
 
     newRow.appendChild(actionBtnCell);
-    newRow.appendChild(createReadOnlyCell(dateInput, "submissionDate"));
-    newRow.appendChild(createReadOnlyCell(clientName, "clientName"));
-    newRow.appendChild(createReadOnlyCell(pageNumber, "pageNumber"));
-    newRow.appendChild(createReadOnlyCell(newspaperName, "newspaperName"));
-    newRow.appendChild(createReadOnlyCell(state, "state"));
-    newRow.appendChild(createReadOnlyCell(edition, "edition"));
-    newRow.appendChild(createReadOnlyCell(dav, "dav"));
+    // newRow.appendChild(createReadOnlyCell(dateInput, "submissionDate"));
+    // newRow.appendChild(createReadOnlyCell(clientName, "clientName"));
+    // newRow.appendChild(createReadOnlyCell(pageNumber, "pageNumber"));
+    // newRow.appendChild(createReadOnlyCell(newspaperName, "newspaperName"));
+    // newRow.appendChild(createReadOnlyCell(state, "state"));
+    // newRow.appendChild(createReadOnlyCell(edition, "edition"));
+    // newRow.appendChild(createReadOnlyCell(dav, "dav"));
 
 
 
@@ -591,9 +633,9 @@ function addRow() {
         newRow.appendChild(extraCell);
 
     }
-    newRow.appendChild(createReadOnlyCell(language, "language"));
+    // newRow.appendChild(createReadOnlyCell(language, "language"));
     // newRow.appendChild(createReadOnlyCell(language));
-    newRow.appendChild(roNumberCell);
+    // newRow.appendChild(roNumberCell);
     newRow.appendChild(roDateCell);
     newRow.appendChild(dopCell);
     newRow.appendChild(lengthCell);
@@ -643,7 +685,7 @@ function fetchCategory(){
             // Clear the existing options (if any)
             categoryListdropDown.innerHTML = '<option value="" selected disabled>Select Category</option>';
 
-            console.log("category ",categoryData);
+            //console.log("category ",categoryData);
             // Append the fetched periodicity data as options
             categoryData.forEach(item => {
                 const option = document.createElement('option');
@@ -673,7 +715,7 @@ function fetchPeriodicity(){
             // Clear the existing options (if any)
             periodicityDropdown.innerHTML = '<option value="" selected disabled>Select Periodicity</option>';
 
-            console.log("periodicityData ",periodicityData);
+            //console.log("periodicityData ",periodicityData);
             // Append the fetched periodicity data as options
             periodicityData.forEach(item => {
                 const option = document.createElement('option');
@@ -692,6 +734,10 @@ function fetchLanguage() {
     const placeOfPublicationDropdown = document.getElementById('placeOfPublication');
     const languageDropDown = document.getElementById('language');
 
+   //  making Ro number Blank
+   document.getElementById('roNumber').value = '';
+   document.getElementById('depName').value = '';
+
     const selectedNewspaper = decodeHTML(newspaperDropdown.value); // Decode the selected newspaper name
     const selectedPublicationPlace = placeOfPublicationDropdown.value; // Get the selected place of publication
 
@@ -704,13 +750,13 @@ function fetchLanguage() {
         url += `&publicationPlace=${encodeURIComponent(selectedPublicationPlace)}`;
     }
      document.getElementById("dav").value='';
-    console.log("API URL:", url);
+    //console.log("API URL:", url);
 
     // Fetch data from the backend
     fetch(url)
         .then(response => response.json())
         .then(data => {
-            console.log("Response Data:", data);
+            //console.log("Response Data:", data);
 
             // Populate the Language dropdown
             data.forEach(language => {
@@ -747,13 +793,13 @@ function fetchPublicationName() {
 
     document.getElementById("dav").value='';
 
-    console.log("API URL:", url);
+    //console.log("API URL:", url);
 
     // Fetch data from the backend
     fetch(url)
         .then(response => response.json())
         .then(data => {
-            console.log("Response Data:", data);
+            //console.log("Response Data:", data);
 
             // Populate the Place of Publication dropdown
             data.forEach(publication => {
@@ -781,19 +827,16 @@ function fetchStates() {
     document.getElementById("categoryDropDown").style.display="none";
 
 
-    console.log("selectedNewspaper:", selectedNewspaper);
-
     // Remove encodeURIComponent and send the raw value directly
     const url = `/api/getState?newspaperName=${selectedNewspaper}`;
 
-    console.log("url", url);
     document.getElementById("dav").value='';
 
     // Fetch states from the backend
     fetch(url)
         .then(response => response.json())
         .then(states => {
-            console.log("states", states);
+            //console.log("states", states);
             // Populate the state dropdown
             states.forEach(state => {
                 const option = document.createElement('option');
@@ -812,8 +855,6 @@ function decodeHTML(encodedString) {
     const doc = new DOMParser().parseFromString(encodedString, 'text/html');
     return doc.body.textContent || doc.body.innerText;
 }
-
-
 
 //print function
 function printPage() {
@@ -884,6 +925,15 @@ document.getElementById("clientNameForGenerateRO").addEventListener("change",fet
 document.getElementById("roDateForGenrateRo").addEventListener("change",getNewspaperListForGenerateRo);
 document.getElementById("newspaperNameForGenRo").addEventListener("change",getPublicationDate);
 
+document.getElementById("clientID").addEventListener("change",generateRoNumber);
+document.getElementById("depName").addEventListener("change",generateRoNumber);
+document.getElementById("dateInput").addEventListener("change",generateRoNumber);
+document.getElementById("clientName").addEventListener("change",generateRoNumber);
+document.getElementById("clientName").addEventListener("change",fetchClientIDs);
+
+document.getElementById("newspaperName").addEventListener("change",fetchRoNumberData);
+document.getElementById("dateInput").addEventListener("change",fetchRoNumberData);
+
 
 // call All client name using submission date
 
@@ -945,9 +995,9 @@ async function getNewspaperListForGenerateRo(){
         return;
     }
 
-    console.log("submissionDate:", submissionDate);
-    console.log("clientName:", clientName);
-    console.log("roDateForGenrateRo:", roDateForGenrateRo);
+    //console.log("submissionDate:", submissionDate);
+    //console.log("clientName:", clientName);
+    //console.log("roDateForGenrateRo:", roDateForGenrateRo);
 
     try {
         // Make the API call with submissionDate, clientName, and roDate as path variables
@@ -959,7 +1009,7 @@ async function getNewspaperListForGenerateRo(){
 
         // Assuming the API returns a JSON array of newspaper names
         const newspaperNames = await response.json();
-        console.log("Newspaper Names:", newspaperNames);
+        //console.log("Newspaper Names:", newspaperNames);
 
         // Get the Newspaper Name dropdown element
         const newspaperDropdown = document.getElementById("newspaperNameForGenRo");
@@ -1053,6 +1103,7 @@ async function fetchDataofClient() {
 
         // Clear existing rows
         tableBody.innerHTML = "";
+        //console.log("Client data",data);
         // Append rows dynamically
         data.forEach(client => {
 
@@ -1136,7 +1187,7 @@ function fetchNewspaperData() {
     fetch('/api/newspapersMaster')
         .then(response => response.json())  // Assuming the response is a JSON array
         .then(data => {
-            console.log(data);  // Log the response to check its structure
+            //console.log(data);  // Log the response to check its structure
             let tableBody = document.getElementById('viewTable');
             tableBody.innerHTML = ''; // Clear the table body before adding new rows
 
@@ -1327,27 +1378,27 @@ function navigateToForm(id) {
         .then(response => response.json())
         .then(data => {
 
-            console.log("Prefilled Data ",data);
+            //console.log("Prefilled Data ",data);
 
                 // Prefill the form fields with the fetched data
 
-                document.getElementById('SubmissionDate').value = data.submissionDate || '';
-                document.getElementById('clientNameForGenerateRO').value = data.clientName || '';
-                document.getElementById('roDateForGenrateRo').value = data.roDate || '';
-                document.getElementById('newspaperNameForGenRo').value = data.newspaperName || '';
-                document.getElementById('publishcationDate').value = data.dateOfPublication || '';
-                document.getElementById('generateGst').value = data.gstType || '';
-
-            // Set fields to readonly
-            document.getElementById('SubmissionDate').readOnly = true;
-            document.getElementById('clientNameForGenerateRO').readOnly = true;
-            document.getElementById('roDateForGenrateRo').readOnly = true;
-            document.getElementById('newspaperNameForGenRo').readOnly = true;
-            document.getElementById('publishcationDate').readOnly = true;
-            document.getElementById('generateGst').disabled = true;
+            //     document.getElementById('SubmissionDate').value = data.submissionDate || '';
+            //     document.getElementById('clientNameForGenerateRO').value = data.clientName || '';
+            //     document.getElementById('roDateForGenrateRo').value = data.roDate || '';
+            //     document.getElementById('newspaperNameForGenRo').value = data.newspaperName || '';
+            //     document.getElementById('publishcationDate').value = data.dateOfPublication || '';
+            //     document.getElementById('generateGst').value = data.gstType || '';
+            //
+            // // Set fields to readonly
+            // document.getElementById('SubmissionDate').readOnly = true;
+            // document.getElementById('clientNameForGenerateRO').readOnly = true;
+            // document.getElementById('roDateForGenrateRo').readOnly = true;
+            // document.getElementById('newspaperNameForGenRo').readOnly = true;
+            // document.getElementById('publishcationDate').readOnly = true;
+            // document.getElementById('generateGst').disabled = true;
 
             // Call the showRo function to generate RO
-            showRo();
+            // showRo();
 
         })
         .catch(error => {
@@ -1385,7 +1436,7 @@ document.getElementById('submitBtn').addEventListener('click', function(event) {
             .then(response => response.text()) // Get the response as plain text
             .then(message => {
                 // Handle the response message from the backend
-                console.log(message);  // Log the message to check its content
+                //console.log(message);  // Log the message to check its content
 
                 if (message === 'Client Added Successfully') {
                     // Success message using SweetAlert2
@@ -1436,8 +1487,9 @@ async function showRo(){
     const newspaperNameForGenRo = document.getElementById("newspaperNameForGenRo").value.trim();
     const publishcationDate = document.getElementById("publishcationDate").value.trim();
     const generateGst = document.getElementById("generateGst").value.trim();
+    const generateRoNumber = document.getElementById("generateRoNumber").value.trim();
 
-    if (submissionDate === '' || clientName === '' || roDateForGenrateRo === '' || newspaperNameForGenRo === '' || publishcationDate === '' || generateGst ==='') {
+    if (submissionDate === '' || clientName === '' || roDateForGenrateRo === '' || newspaperNameForGenRo === '' || publishcationDate === '' || generateGst ===''|| generateRoNumber ==='') {
         alert("Please select Submission Date, Client Name,RO Date and Newspaper Name");
         return;
     }
@@ -1455,7 +1507,7 @@ async function showRo(){
     const finSgst = document.getElementById("finSgst");
     const finicgst = document.getElementById("finicgst");
     const finTotalPayAbleAmount = document.getElementById("finTotalPayAbleAmount");
-    const genRoNumber = document.getElementById("genRoNumber");
+    const genRoNumber = document.getElementById("generateRoNumber");
 
 
     if(generateGst ==='IGST'){
@@ -1469,9 +1521,24 @@ async function showRo(){
         document.getElementById("Icgst").style.display='none';
     }
 
+    const generateRoData = {
+        submissionDate: submissionDate,
+        clientName: clientName,
+        roDates: roDateForGenrateRo,
+        newspaper: newspaperNameForGenRo,
+        publicationDate: publishcationDate,
+        generateRoNumber: generateRoNumber,
+    };
 
     try {
-        const response = await fetch(`/api/getReleaseOrder/${submissionDate}/${clientName}/${roDateForGenrateRo}/${newspaperNameForGenRo}/${publishcationDate}`);
+
+        const response = await fetch('/api/getReleaseOrder', {
+            method: 'POST', // Use POST to send JSON body data
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(generateRoData), // Send JSON data in the body
+        });
         if (!response.ok) {
             throw new Error(`Error fetching release order: ${response.statusText}`);
         }
@@ -1489,17 +1556,15 @@ async function showRo(){
 
         var sumfinTotalAmount = 0;
         var sumfinAgencyCommission = 0;
-        var sumfinPaperPublisihAmount = 0;
         var sumfinCgst = 0;
-        var sumfinSgst = 0;
         var sumfinTotalPayAbleAmount = 0;
 
-        console.log("data",data);
+        //console.log("data",data);
         // Loop through the fetched data and append rows to the table
         data.forEach(row => {
             const tableRow = document.createElement('tr');
 
-            console.log(row);
+            //console.log(row);
             // Create table cells based on the row data
 
             sumfinTotalAmount += parseFloat(row.amount);
@@ -1544,4 +1609,81 @@ async function showRo(){
     }
 }
 
+
+function generateRoNumber(){
+    const roNo = document.getElementById("roNumber");
+    const depName = document.getElementById("depName").value.trim();
+    const dateValue = document.getElementById("dateInput").value.trim();
+    const clientID = document.getElementById("clientID").value.trim();
+    const specialRoID = document.getElementById("specialRoID").value.trim();
+
+    if (dateValue) {
+        // Extract the year directly using substring
+        var year = dateValue.substring(0, 4);
+
+    }
+
+    if(depName && dateValue && clientID && year){
+        roNo.value = `NC/${depName}/${clientID}/${year}/${specialRoID}`
+    }
+}
+
+async function fetchClientIDs() {
+    const clientName = document.getElementById("clientName").value.trim();
+    const url = `/api/getClientID/${clientName}`;
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+
+        const clientIDs = await response.json();
+
+        // Reference to the clientID dropdown
+        const clientIDDropdown = document.getElementById("clientID");
+
+        // Clear existing options
+        clientIDDropdown.innerHTML = `<option value="" disabled selected>Select a client ID</option>`;
+
+
+        console.log("clientIDs",clientIDs);
+        // Populate the dropdown with client IDs
+        clientIDs.forEach(clientData => {
+            const option = document.createElement("option");
+            option.value = clientData.client_short_form;
+            option.textContent = clientData.client_short_form;
+            clientIDDropdown.appendChild(option);
+        });
+    } catch (error) {
+        console.error("Error fetching client IDs:", error);
+        alert("Failed to fetch client IDs. Please try again later.");
+    }
+}
+
+function fetchRoNumberData() {
+    const newspaperName = document.getElementById("newspaperName").value;
+    const submissionDate = document.getElementById("dateInput").value;
+
+    if (!clientName || !submissionDate) {
+        alert("Please enter both client name and submission date.");
+        return;
+    }
+
+    // Construct the API URL
+    const apiUrl = `/api/getSpeicalRoNumber/${newspaperName}/${submissionDate}`;
+
+    // Fetch data from the backend
+    fetch(apiUrl)
+        .then(response => response.text())
+        .then(data => {
+            console.log("RO number data", data);
+            document.getElementById("specialRoID").value = data;
+
+        })
+        .catch(error => {
+            console.error("Error fetching data:", error);
+            document.getElementById("resultContainer").innerHTML = "<p>Error fetching data. Please try again later.</p>";
+        });
+}
 

@@ -17,4 +17,7 @@ public interface ClientRepository extends JpaRepository<Client,Long> {
 
     @Query(value = "SELECT * FROM client ORDER BY client_name ASC;",nativeQuery = true)
     List<Map<String, Object>> fetchClientData();
+
+    @Query(value = "SELECT client_short_form FROM client WHERE client_name =?1 ORDER BY client_short_form ASC;",nativeQuery = true)
+    List<Map<String, Object>> fetClientSpecialID(String clientName);
 }
