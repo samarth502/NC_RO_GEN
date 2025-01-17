@@ -66,4 +66,8 @@ public interface ImportService {
 
 
     List<Map<String, Object>> getClientData();
+
+    void deleteClientById(Long id);
+
+
 }

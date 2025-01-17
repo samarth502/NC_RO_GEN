@@ -10,7 +10,6 @@ function hideLoader() {
     loader.style.display = 'none'; // Hide the loader
 }
 
-
 // File upload event listener with loader integration
 document.getElementById('fileUploadForm').addEventListener('submit', function (event) {
     event.preventDefault(); // Prevent form submission
@@ -151,9 +150,6 @@ function showToast(icon, title, message, position = 'top-end', timer = 10000) {
     });
 }
 
-
-
-
 function getDav(){
 
     const newspaperName2 = document.getElementById("newspaperName").value.trim();
@@ -210,7 +206,6 @@ function getDav(){
         });
 
 }
-
 
 document.getElementById("newspaperName").addEventListener("change", getDav);
 document.getElementById("stateDropdown").addEventListener("change", getDav);
@@ -1058,13 +1053,15 @@ async function fetchDataofClient() {
 
         // Clear existing rows
         tableBody.innerHTML = "";
-        console.log("Client data",data);
         // Append rows dynamically
         data.forEach(client => {
+
             const row = document.createElement("tr");
+
             row.innerHTML = `
                         <td>${client.client_name}</td>
-                        <td>${client.client_short_form}</td>
+                        <td>${client.client_short_form}</td>  
+                         <td><button class="btn btn-danger" onclick="deleteClient(${client.id})">Delete</button></td>
                     `;
             tableBody.appendChild(row);
         });
@@ -1072,6 +1069,57 @@ async function fetchDataofClient() {
         console.error("Error fetching client data:", error);
     }
 }
+
+// Js For Delete Client
+function deleteClient(id) {
+
+    // Show a confirmation dialog before proceeding
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to undo this action!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // If the user confirms, make the API call to delete the client
+            fetch(`/api/deleteClientById/${id}`, {
+                method: 'GET', // Adjusting to your backend's method
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // Show success message
+                        Swal.fire(
+                            'Deleted!',
+                            'The client has been deleted.',
+                            'success'
+                        ).then(() => {
+                            // Reload the page or refresh the table
+                            location.reload();
+                        });
+                    } else {
+                        // Handle error response
+                        Swal.fire(
+                            'Error!',
+                            'Failed to delete the client. Please try again.',
+                            'error'
+                        );
+                    }
+                })
+                .catch(error => {
+                    console.error("Error occurred while deleting the client:", error);
+                    Swal.fire(
+                        'Error!',
+                        'An error occurred. Please check the console for details.',
+                        'error'
+                    );
+                });
+        }
+    });
+}
+
 
 // Function to load data into the table when the "View Master" tab is clicked
 document.getElementById('viewMasterTab').addEventListener('click', function () {
@@ -1081,7 +1129,7 @@ document.getElementById('viewMasterTab').addEventListener('click', function () {
 // Function to fetch data from backend and populate the table
 function fetchNewspaperData() {
     // Show the loader and hide the table
-    document.getElementById('loader').style.display = 'block';
+    document.getElementById('loader').style.display = 'flex';
     document.getElementById('tableContainer').style.display = 'none';
 
     // Perform AJAX request to fetch the data from the backend
@@ -1147,54 +1195,99 @@ document.getElementById('previewRoTab').addEventListener('click', function () {
     fetchRoPreviewData(); // Fetch data when the tab is clicked
 });
 
-// Function to fetch data from backend and populate the table
 function fetchRoPreviewData() {
     // Show the loader and hide the table
-    document.getElementById('loader').style.display = 'block';
+    document.getElementById('loader').style.display = 'flex';
     document.getElementById('previewRoContainer').style.display = 'none';
 
     // Perform AJAX request to fetch the data from the backend
     fetch('/api/fetchRoData')
-        .then(response => response.json())  // Assuming the response is a JSON array
+        .then(response => response.json()) // Assuming the response is a JSON array
         .then(data => {
-            console.log(data);  // Log the response to check its structure
+            console.log(data); // Log the response to check its structure
             let tableBody = document.getElementById('previewRoTbody');
             tableBody.innerHTML = ''; // Clear the table body before adding new rows
 
-            // Check if 'data' is an array
             if (Array.isArray(data)) {
-                // Loop through the fetched data and append rows to the table
-                data.forEach(roData => {
+                let previousKey = null; // To track the combined key of the previous row
+                let mergeRowStartIndex = null; // To track the starting row for merging
+                let mergeCount = 0; // To track the number of rows to merge
+
+                data.forEach((roData, index) => {
+                    let currentKey = `${roData.submissionDate || ''}|${roData.newspaperName || ''}|${roData.clientName || ''}|${roData.roDate || ''}|${roData.roNumber || ''}|${roData.dateOfPublication || ''}|${roData.dateOfPublication || ''}`;
+
                     let row = document.createElement('tr');
-                    row.innerHTML = `
-                          <td>
-                            <button class="btn btn-primary" onclick="navigateToForm(${roData.id})">Release Ro</button>
-                        </td>
-                            <td>${roData.dateOfPublication || ''}</td>
-                                <td>${roData.roDate || ''}</td>
-                                    <td>${roData.newspaperName || ''}</td>
-    <td>${roData.submissionDate || ''}</td>
-    <td>${roData.clientName || ''}</td>
-    <td>${roData.pageNumber || ''}</td>
-    <td>${roData.state || ''}</td>
-    <td>${roData.edition || ''}</td>
-    <td>${roData.dav || ''}</td>
-    <td>${roData.color || ''}</td>
-    <td>${roData.language || ''}</td>
-    <td>${roData.roNumber || ''}</td>
-    <td>${roData.length || ''}</td>
-    <td>${roData.breadth || ''}</td>
-    <td>${roData.totalSize || ''}</td>
-    <td>${roData.amount || ''}</td>
-    <td>${roData.priceToNewsPaper || ''}</td>
-    <td>${roData.gst || ''}</td>
-    <td>${roData.netPayable || ''}</td>
-    <td>${roData.emailId || ''}</td>
-    <td>${roData.phoneNumber || ''}</td>
-`;
+
+                    // Create a button cell separately for easier merging
+                    let buttonCell = document.createElement('td');
+                    buttonCell.innerHTML = `<button class="btn btn-primary" onclick="navigateToForm(${roData.id})">Release Ro</button>`;
+                    row.appendChild(buttonCell);
+
+                    // Fill other row data
+                    row.innerHTML += `
+                        <td>${roData.submissionDate || ''}</td>
+                        <td>${roData.newspaperName || ''}</td>
+                        <td>${roData.clientName || ''}</td>
+                        <td>${roData.roDate || ''}</td>
+                        <td>${roData.roNumber || ''}</td>
+                        <td>${roData.dateOfPublication || ''}</td>
+                        <td>${roData.pageNumber || ''}</td>
+                        <td>${roData.state || ''}</td>
+                        <td>${roData.edition || ''}</td>
+                        <td>${roData.dav || ''}</td>
+                        <td>${roData.color || ''}</td>
+                        <td>${roData.language || ''}</td>
+                        <td>${roData.length || ''}</td>
+                        <td>${roData.breadth || ''}</td>
+                        <td>${roData.totalSize || ''}</td>
+                        <td>${roData.amount || ''}</td>
+                        <td>${roData.priceToNewsPaper || ''}</td>
+                        <td>${roData.gst || ''}</td>
+                        <td>${roData.netPayable || ''}</td>
+                        <td>${roData.emailId || ''}</td>
+                        <td>${roData.phoneNumber || ''}</td>
+                    `;
                     tableBody.appendChild(row);
 
+                    if (currentKey === previousKey) {
+                        // Increment merge count and hide the current row cells for the specified columns
+                        mergeCount++;
+                        let columnsToMerge = [0, 1, 2, 3, 4, 5, 6]; // Indices of the columns to merge
+                        columnsToMerge.forEach(colIndex => {
+                            row.cells[colIndex].style.display = 'none';
+                        });
+                        // Hide the button cell
+                        buttonCell.style.display = 'none';
+                    } else {
+                        // Apply rowspan to the merged cells in the previous group
+                        if (mergeCount > 0 && mergeRowStartIndex !== null) {
+                            let previousRow = tableBody.rows[mergeRowStartIndex];
+                            let columnsToMerge = [0, 1, 2, 3, 4, 5, 6]; // Indices of the columns to merge
+                            columnsToMerge.forEach(colIndex => {
+                                previousRow.cells[colIndex].rowSpan = mergeCount + 1;
+                            });
+                            // Apply rowspan to the button cell
+                            previousRow.cells[0].rowSpan = mergeCount + 1;
+                        }
+                        // Reset merge tracking variables
+                        mergeRowStartIndex = tableBody.rows.length - 1;
+                        mergeCount = 0;
+                    }
+
+                    // Update the previous key
+                    previousKey = currentKey;
                 });
+
+                // Apply rowspan to the last group if needed
+                if (mergeCount > 0 && mergeRowStartIndex !== null) {
+                    let previousRow = tableBody.rows[mergeRowStartIndex];
+                    let columnsToMerge = [0, 1, 2, 3, 4, 5, 6]; // Indices of the columns to merge
+                    columnsToMerge.forEach(colIndex => {
+                        previousRow.cells[colIndex].rowSpan = mergeCount + 1;
+                    });
+                    // Apply rowspan to the button cell
+                    previousRow.cells[0].rowSpan = mergeCount + 1;
+                }
 
                 // Destroy the previous DataTable instance (if exists)
                 if ($.fn.dataTable.isDataTable('#previewRoTable')) {
@@ -1222,6 +1315,8 @@ function fetchRoPreviewData() {
         });
 }
 
+
+
 // Function to navigate to the "Create RO" tab and pre-fill the data
 function navigateToForm(id) {
     const createRoTab = new bootstrap.Tab(document.querySelector('a[href="#generateRO"]'));
@@ -1234,23 +1329,31 @@ function navigateToForm(id) {
 
             console.log("Prefilled Data ",data);
 
-            //     // // Prefill the form fields with the fetched data
-            //     document.getElementById('client').value = data.clientName || '';
-            //     document.getElementById('SubmissionDate').value = data.submissionDate || '';
-            //     document.getElementById('roDate').value = data.roDate || '';
-            //
-            // document.getElementById('roNumber').textContent = data.roNumber || '';
-            // document.getElementById('roDates').textContent = data.roDate || '';
-            // document.getElementById('publishDate').textContent = data.dateOfPublication || '';
-            // document.getElementById('clientInfo').textContent = data.clientName || '';
-            // document.getElementById('pagePosition').textContent = data.pageNumber || '';
+                // Prefill the form fields with the fetched data
+
+                document.getElementById('SubmissionDate').value = data.submissionDate || '';
+                document.getElementById('clientNameForGenerateRO').value = data.clientName || '';
+                document.getElementById('roDateForGenrateRo').value = data.roDate || '';
+                document.getElementById('newspaperNameForGenRo').value = data.newspaperName || '';
+                document.getElementById('publishcationDate').value = data.dateOfPublication || '';
+                document.getElementById('generateGst').value = data.gstType || '';
+
+            // Set fields to readonly
+            document.getElementById('SubmissionDate').readOnly = true;
+            document.getElementById('clientNameForGenerateRO').readOnly = true;
+            document.getElementById('roDateForGenrateRo').readOnly = true;
+            document.getElementById('newspaperNameForGenRo').readOnly = true;
+            document.getElementById('publishcationDate').readOnly = true;
+            document.getElementById('generateGst').disabled = true;
+
+            // Call the showRo function to generate RO
+            showRo();
 
         })
         .catch(error => {
             console.error('Error fetching data for pre-filling:', error);
         });
 }
-
 
 <!--Add Client-->
 document.getElementById('submitBtn').addEventListener('click', function(event) {

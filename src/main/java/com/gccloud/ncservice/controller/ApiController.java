@@ -256,6 +256,13 @@ public class ApiController {
         return roGenerationData;
     }
 
+    @GetMapping("/deleteClientById/{id}")
+    public void fetchRoData(@PathVariable(value = "id") Long id){
+
+        importService.deleteClientById(id);
+
+    }
+
     // Endpoint to fetch RO data by ID
     @GetMapping("/getRoDataById/{id}")
     public RoGenerationData getRoDataById(@PathVariable Long id) {

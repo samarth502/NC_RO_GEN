@@ -297,7 +297,7 @@ public class ImportServiceImpl implements ImportService {
     @Override
     public List<RoGenerationData> fetchRoData() {
 
-        List<RoGenerationData> roGenerationData = roGenerationDataRepository.findAll();
+        List<RoGenerationData> roGenerationData = roGenerationDataRepository.findAllByOrder();
 
         return roGenerationData;
 
@@ -340,5 +340,11 @@ public class ImportServiceImpl implements ImportService {
         return clientRepository.fetchClientData();
     }
 
+    @Override
+    public void deleteClientById(Long id) {
+
+        clientRepository.deleteById(id);
+
+    }
 
 }
