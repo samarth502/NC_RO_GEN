@@ -175,7 +175,7 @@ function getDav(){
             fetchCategory();
             return;
         }
-         url = `/api/getDavRates?newspaperName=${encodeURIComponent(newspaperName)}&edition=${encodeURIComponent(edition)}&language=${encodeURIComponent(language)}&periodicity=${encodeURIComponent(periodicity)}&category=${encodeURIComponent(category)}`;
+        url = `/api/getDavRates?newspaperName=${encodeURIComponent(newspaperName)}&edition=${encodeURIComponent(edition)}&language=${encodeURIComponent(language)}&periodicity=${encodeURIComponent(periodicity)}&category=${encodeURIComponent(category)}`;
     }
 
 
@@ -734,9 +734,9 @@ function fetchLanguage() {
     const placeOfPublicationDropdown = document.getElementById('placeOfPublication');
     const languageDropDown = document.getElementById('language');
 
-   //  making Ro number Blank
-   document.getElementById('roNumber').value = '';
-   document.getElementById('depName').value = '';
+    //  making Ro number Blank
+    document.getElementById('roNumber').value = '';
+    document.getElementById('depName').value = '';
 
     const selectedNewspaper = decodeHTML(newspaperDropdown.value); // Decode the selected newspaper name
     const selectedPublicationPlace = placeOfPublicationDropdown.value; // Get the selected place of publication
@@ -749,7 +749,7 @@ function fetchLanguage() {
     if (selectedPublicationPlace) {
         url += `&publicationPlace=${encodeURIComponent(selectedPublicationPlace)}`;
     }
-     document.getElementById("dav").value='';
+    document.getElementById("dav").value='';
     //console.log("API URL:", url);
 
     // Fetch data from the backend
@@ -1366,8 +1366,6 @@ function fetchRoPreviewData() {
         });
 }
 
-
-
 // Function to navigate to the "Create RO" tab and pre-fill the data
 function navigateToForm(id) {
     const createRoTab = new bootstrap.Tab(document.querySelector('a[href="#generateRO"]'));
@@ -1377,33 +1375,51 @@ function navigateToForm(id) {
     fetch(`/api/getRoDataById/${id}`)
         .then(response => response.json())
         .then(data => {
+            console.log("Prefilled Data", data);
 
-            //console.log("Prefilled Data ",data);
+            // Prefill the date inputs
+            document.getElementById('SubmissionDate').value = data.submissionDate || '';
 
-                // Prefill the form fields with the fetched data
+            // Populate dropdowns with direct value lists
+            populateDropdown('clientNameForGenerateRO', data.clientName);
+            populateDropdown('roDateForGenrateRo', data.roDate);
+            populateDropdown('newspaperNameForGenRo', data.newspaperName);
+            populateDropdown('publishcationDate', data.dateOfPublication);
+            populateDropdown('generateRoNumber', data.roNumber);
 
-            //     document.getElementById('SubmissionDate').value = data.submissionDate || '';
-            //     document.getElementById('clientNameForGenerateRO').value = data.clientName || '';
-            //     document.getElementById('roDateForGenrateRo').value = data.roDate || '';
-            //     document.getElementById('newspaperNameForGenRo').value = data.newspaperName || '';
-            //     document.getElementById('publishcationDate').value = data.dateOfPublication || '';
-            //     document.getElementById('generateGst').value = data.gstType || '';
-            //
-            // // Set fields to readonly
-            // document.getElementById('SubmissionDate').readOnly = true;
-            // document.getElementById('clientNameForGenerateRO').readOnly = true;
-            // document.getElementById('roDateForGenrateRo').readOnly = true;
-            // document.getElementById('newspaperNameForGenRo').readOnly = true;
-            // document.getElementById('publishcationDate').readOnly = true;
-            // document.getElementById('generateGst').disabled = true;
-
-            // Call the showRo function to generate RO
-            // showRo();
-
+            // Set fields to readonly or disabled if necessary
+            document.getElementById('SubmissionDate').readOnly = true;
         })
         .catch(error => {
             console.error('Error fetching data for pre-filling:', error);
         });
+}
+
+// Helper function to populate dropdowns
+function populateDropdown(dropdownId, valueList) {
+    const dropdown = document.getElementById(dropdownId);
+
+    // Clear existing options
+    dropdown.innerHTML = '';
+
+    // Ensure valueList is an array (wrap string in an array if necessary)
+    if (typeof valueList === 'string') {
+        valueList = [valueList];  // Convert string to an array with one element
+    }
+
+    // Check if valueList is a valid array and not empty
+    if (Array.isArray(valueList) && valueList.length > 0) {
+        // Add options dynamically
+        valueList.forEach(value => {
+
+            const opt = document.createElement('option');
+            opt.value = value; // Set the option's value
+            opt.textContent = value; // Set the option's display text
+            dropdown.appendChild(opt);
+        });
+    } else {
+        console.error("Value list is not an array or is empty.");
+    }
 }
 
 <!--Add Client-->
