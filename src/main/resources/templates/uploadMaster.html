@@ -150,7 +150,7 @@
                 class="text-white px-5"
                 id="uploadRates"
                 role="tabpanel"
-                style="background-color: rgb(50,52,71); font-family: 'Poppins', sans-serif; font-size: 1.1rem; padding: 150px 0";>
+                style="background-color: rgb(50,52,71); font-family: 'Poppins', sans-serif; font-size: 1.1rem; padding: 100px 0";>
 
             <!-- Heading Section -->
             <h2
@@ -195,7 +195,7 @@
 
 
         <!-- View Master Content -->
-        <div class="tab-pane fade mt-2 " id="viewRates" role="tabpanel" style="background-color: rgb(50,52,71); " >
+        <div class="tab-pane fade mt-2 pb-5 " id="viewRates" role="tabpanel" style="background-color: rgb(50,52,71); " >
             <div class="container-fluid " style="padding: 0px 50px" >
                 <h2 class="text-start text-white " style=" font-weight: inherit; padding: 20px 0px"
                 >View Master</h2>
@@ -394,7 +394,7 @@
         <!-- Create Ro-->
         <div class="tab-pane fade" id="createRo" role="tabpanel" style="background-color: rgb(50,52,71); margin-top: 5px; padding: 15px 35px" ;>
             <div class="container-fluid">
-                <h2 class="" style="color: white">Create RO</h2>
+                <h2 class="" style="color: white; font-weight: inherit">Create RO</h2>
                 <div  >
                     <div class="container-fluid">
                         <form>
@@ -596,8 +596,8 @@
 
                         </tr>
                         <tr>
-                            <th>Length <br>cm</th>
-                            <th>Breadth <br>cm</th>
+                            <th  style="color: white; font-weight: inherit;">Length <br>cm</th>
+                            <th  style="color: white; font-weight: inherit;">Breadth <br>cm</th>
 
                         </tr>
                         </thead>
@@ -613,9 +613,9 @@
         </div>
 
         <!-- Preview RO-->
-        <div class="tab-pane fade" id="previewRo" role="tabpanel">
+        <div class="tab-pane fade mt-2 py-2" id="previewRo"  role="tabpanel" style="background-color: rgb(50,52,71); margin-top: 5px; padding: 15px 35px">
             <div class="container-fluid">
-                <h2>Preview RO</h2>
+                <h2 style="color: white; font-weight: inherit">Preview RO</h2>
                 <div class="card">
                     <div class="card-header">
                         RO Details
@@ -660,9 +660,9 @@
         </div>
 
         <!-- Add Client-->
-        <div class="tab-pane fade" id="addClient" role="tabpanel">
+        <div class="tab-pane fade" id="addClient" role="tabpanel" style="background-color: rgb(50,52,71); margin-top: 5px; padding: 15px 35px">
             <div class="container-fluid">
-                <h2>Add Client</h2>
+                <h2 style="color: white; font-weight: inherit">Add Client</h2>
                 <div>
                     <div class="container-fluid">
                         <form action="/addClient" method="POST" id="addClientForm">
@@ -670,7 +670,8 @@
                                 <!-- Client Name -->
                                 <div class="col-md-3 mb-3">
                                     <div class="input-group">
-                                        <span class="input-group-text">Client Name</span>
+                                        <span class="input-group-text" style="color: white; font-weight: inherit;">Client Name</span>
+
                                         <input type="text" class="form-control uppercase" name="clientName" id="cName" required>
                                     </div>
                                 </div>
@@ -691,9 +692,9 @@
 
                         <table id="clientData" class="table table-bordered table-stripped table-responsive" style="width: 100% !important">
                             <thead>
-                                <th>Client Name</th>
-                                <th>Client ID</th>
-                                <th>Action</th>
+                                <th style="color: white;font-weight: inherit">Client Name</th>
+                                <th style="color: white;font-weight: inherit">Client ID</th>
+                                <th style="color: white;font-weight: inherit">Action</th>
                             </thead>
                             <tbody>
 
@@ -705,8 +706,8 @@
         </div>
 
         <!-- Generate RO For Release Tab -->
-        <div class="tab-pane fade" id="generateRO" role="tabpanel">
-            <h2>Generate RO For Release</h2>
+        <div class="tab-pane fade" id="generateRO" role="tabpanel" style="background-color: rgb(50,52,71); margin-top: 5px; padding: 15px 35px">
+            <h2 style="color: white; font-weight: inherit">Generate RO For Release</h2>
             <div class="row">
 
                 <div class="col-md-3 mb-3" >
@@ -968,15 +969,15 @@
         </div>
 
         <!-- Services Tab -->
-        <div class="tab-pane fade" id="services" role="tabpanel">
-            <h2>Services</h2>
-            <p>Explore the services we provide and find the one that suits your needs.</p>
+        <div class="tab-pane fade" id="services" role="tabpanel" style="background-color: rgb(50,52,71); margin-top: 5px; padding: 15px 45px">
+            <h2  style="color: white; font-weight: inherit">Services</h2>
+            <p  style="color: white; font-weight: inherit">Explore the services we provide and find the one that suits your needs.</p>
         </div>
 
         <!-- Contact Tab -->
-        <div class="tab-pane fade" id="contact" role="tabpanel">
-            <h2>Contact</h2>
-            <p>Get in touch with us for any inquiries or support.</p>
+        <div class="tab-pane fade" id="contact" role="tabpanel"   style="background-color: rgb(50,52,71); margin-top: 5px; padding: 15px 45px">
+            <h2  style="color: white; font-weight: inherit">Contact</h2>
+            <p  style="color: white; font-weight: inherit">Get in touch with us for any inquiries or support.</p>
         </div>
 
     </div>
@@ -990,6 +991,15 @@
 
 
 <script>
+
+    // Wait until the DOM is fully loaded
+    document.addEventListener("DOMContentLoaded", function () {
+        // Select the table body by ID
+        const tableBody = document.querySelector("#clientData tbody");
+
+        // Change the color of all text inside the tbody
+        tableBody.style.color = "white";
+    });
 
     async function fetchRonumberForShowReport(){
         const submissionDate = document.getElementById("SubmissionDate").value.trim();
