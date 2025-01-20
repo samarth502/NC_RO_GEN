@@ -7,6 +7,9 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- Add Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Poppins:wght@300;400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
     <!-- SweetAlert2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
 
@@ -21,121 +24,367 @@
     <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@900&display=swap" rel="stylesheet">
+
+
+
 </head>
 
 <body>
 <!-- Header Section -->
-<header class="bg-primary text-white py-3">
-    <div class="container d-flex justify-content-between align-items-center">
-        <img src="/images/gc.png" alt="Left Logo" class="img-fluid" style="max-height: 50px;">
-        <h1 class="text-center mb-0">NC RO GENERATION SERVICE</h1>
-        <img src="/images/nc.png" alt="Right Logo" class="img-fluid" style="max-height: 50px;">
+<header class="text-white py-3 px-5 " style="background-color: rgb(50,52,71)">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+        <img src="/images/gc.png" alt="Left Logo" class="img-fluid rounded" style="max-height: 100px; width: 100px">
+        <h1 class="text-center text-white custom-heading py-4" style="color: transparent;
+           font-family: 'Roboto', sans-serif;">NC RO GENERATION SERVICE</h1>
+        <img src="/images/nc.png" alt="Right Logo" class="img-fluid"  style="max-height: 100px; width: 100px">
     </div>
 </header>
 
 <!-- Navigation Bar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
+<nav class="navbar navbar-expand-lg mt-2 pt-5 pb-5" style="background-color: rgb(50,52,71)">
     <div class="container">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav nav-tabs" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link text-dark active" data-bs-toggle="tab" href="#uploadRates" role="tab">Upload New Master Rates</a>
+                <li class="nav-item fs-5">
+                    <a
+                            class="nav-link active"
+                            style=" font-weight: inherit;"
+                            data-bs-toggle="tab"
+                            href="#uploadRates"
+                            role="tab">
+                        Upload New Master Rates
+                    </a>
                 </li>
 
-                <!-- Navigation Tab for "View Master" -->
-                <li class="nav-item">
-                    <a class="nav-link text-dark" id="viewMasterTab" data-bs-toggle="tab" href="#viewRates" role="tab">View Master</a>
+                <li class="nav-item fs-5">
+                    <a
+                            class="nav-link"
+                            style="color: white; font-weight: inherit;"
+                            data-bs-toggle="tab"
+                            href="#viewRates"
+                            role="tab">
+                        View Master
+                    </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link text-dark" data-bs-toggle="tab" href="#createRo" role="tab">Create RO</a>
+                <li class="nav-item fs-5">
+                    <a
+                            class="nav-link"
+                            style="color: white; font-weight: inherit;"
+                            data-bs-toggle="tab"
+                            href="#createRo"
+                            role="tab">
+                        Create RO
+                    </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link text-dark" id="previewRoTab" data-bs-toggle="tab" href="#previewRo" role="tab">Preview RO</a>
+                <li class="nav-item fs-5">
+                    <a
+                            class="nav-link"
+                            style="color: white; font-weight: inherit;"
+                            data-bs-toggle="tab"
+                            href="#previewRo"
+                            role="tab">
+                        Preview RO
+                    </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link text-dark" data-bs-toggle="tab" href="#addClient" role="tab">Add Client</a>
+                <li class="nav-item fs-5">
+                    <a
+                            class="nav-link"
+                            style="color: white; font-weight: inherit;"
+                            data-bs-toggle="tab"
+                            href="#addClient"
+                            role="tab">
+                        Add Client
+                    </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link text-dark" data-bs-toggle="tab" href="#generateRO" role="tab">Generate RO For Release</a>
+                <li class="nav-item fs-5">
+                    <a
+                            class="nav-link"
+                            style="color: white; font-weight: inherit;"
+                            data-bs-toggle="tab"
+                            href="#generateRO"
+                            role="tab">
+                        Generate RO For Release
+                    </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link text-dark" data-bs-toggle="tab" href="#services" role="tab">Services</a>
+                <li class="nav-item fs-5">
+                    <a
+                            class="nav-link"
+                            style="color: white; font-weight: inherit;"
+                            data-bs-toggle="tab"
+                            href="#services"
+                            role="tab">
+                        Services
+                    </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link text-dark" data-bs-toggle="tab" href="#contact" role="tab">Contact</a>
+                <li class="nav-item fs-5">
+                    <a
+                            class="nav-link"
+                            style="color: white; font-weight: inherit;"
+                            data-bs-toggle="tab"
+                            href="#contact"
+                            role="tab">
+                        Contact
+                    </a>
                 </li>
-
             </ul>
         </div>
     </div>
 </nav>
 
 <!-- Tab Content -->
-<div class="container-fluid mt-4">
+<div class=" mt-2">
     <div class="tab-content">
 
         <!-- Upload New Master Rates Tab (Completed Not To Be Changes Done AnyMore)-->
-        <div class="tab-pane fade show active" id="uploadRates" role="tabpanel">
-            <h2>Upload New Master Rates</h2>
-            <p>This is where you can upload new master rates for your service.</p>
-            <form id="fileUploadForm" class="mb-4">
-                <div class="mb-3">
-                    <label for="fileInput" class="form-label">Upload File (.csv, .xls, .xlsx):</label>
-                    <input type="file" id="fileInput" class="form-control" accept=".csv, .xls, .xlsx" required>
+        <div
+                class="text-white px-5"
+                id="uploadRates"
+                role="tabpanel"
+                style="background-color: rgb(50,52,71); font-family: 'Poppins', sans-serif; font-size: 1.1rem; padding: 150px 0";>
+
+            <!-- Heading Section -->
+            <h2
+                    class="text-center"
+                    style="color: white;
+           font-family: 'Roboto', sans-serif;">
+                Upload New Master Rates
+            </h2>
+
+            <p
+                    class="text-white fs-5 text-center"
+                    style="font-family: 'Lato', sans-serif;">
+                Easily upload and manage new master rates for your service with a streamlined process.
+            </p>
+
+            <!-- Form Section -->
+            <form id="fileUploadForm" class="mb-4 text-center">
+                <div class="mb-3 mx-auto" style="max-width: 350px;">
+                    <label
+                            for="fileInput"
+                            class="form-label"
+                            style="color: rgb(255,255,0); font-weight: inherit; font-size: 1.1rem;">
+                        Upload File (.csv, .xls, .xlsx):
+                    </label>
+                    <input
+                            type="file"
+                            id="fileInput"
+                            class="form-control"
+                            accept=".csv, .xls, .xlsx"
+                            required>
                 </div>
-                <button type="submit" class="btn btn-primary">Upload and Display</button>
+                <button
+                        type="submit"
+                        class="btn btn-primary px-4 py-2"
+                        style="font-size: 1rem; font-weight: bold; background: linear-gradient(90deg, rgb(0, 123, 255), rgb(102, 16, 242)); border: none;">
+                    Upload and Display
+                </button>
             </form>
 
-            <!-- Display File Content -->
-            <div id="fileContent" class="table-responsive">
-                <table class="table table-sm table-bordered table-responsive" id="dataTable">
-                    <thead></thead>
-                    <tbody></tbody>
-                </table>
-            </div>
+
         </div>
 
+
         <!-- View Master Content -->
-        <div class="tab-pane fade" id="viewRates" role="tabpanel">
-            <div class="container-fluid">
-                <h2>View Master</h2>
+        <div class="tab-pane fade mt-2 " id="viewRates" role="tabpanel" style="background-color: rgb(50,52,71); " >
+            <div class="container-fluid " style="padding: 0px 50px" >
+                <h2 class="text-start text-white " style=" font-weight: inherit; padding: 20px 0px"
+                >View Master</h2>
                 <!-- Table (Initially hidden) -->
-                <div class="card">
+                <div class="card" >
                     <div class="card-header">
                         Master Details
                     </div>
                     <div class="card-body">
-                        <div id="tableContainer" style="overflow-x: auto; display: none;">
-                            <table class="table table-sm table-responsive table-bordered table-striped" style="width: 100%;" id="newspapersTable">
-                                <thead>
-                                <tr>
-                                    <th>News Paper Code</th>
-                                    <th>News Paper Name</th>
-                                    <th>Last Renewed Date</th>
-                                    <th>State</th>
-                                    <th>Place Of Publication</th>
-                                    <th>Language</th>
-                                    <th>Periodicity</th>
-                                    <th>Category</th>
-                                    <th>Regularity Status</th>
-                                    <th>Circulation Base</th>
-                                    <th>Circulation</th>
-                                    <th>Rate</th>
-                                </tr>
-                                </thead>
-                                <tbody id="viewTable">
-                                <!-- Data will be filled here dynamically -->
-                                </tbody>
-                            </table>
+                        <div id="tableContainer" style="overflow-x: auto;">
+                            <div class="table-responsive shadow-sm rounded">
+                                <table  class="table table-hover table-sm align-middle " style="width: 100%;" >
+                                    <thead class="text-uppercase text-secondary bg-light">
+                                    <tr>
+                                        <th class="px-3 py-2">News Paper Code</th>
+                                        <th class="px-3 py-2">News Paper Name</th>
+                                        <th class="px-3 py-2">Last Renewed Date</th>
+                                        <th class="px-3 py-2">State</th>
+                                        <th class="px-3 py-2">Place Of Publication</th>
+                                        <th class="px-3 py-2">Language</th>
+                                        <th class="px-3 py-2">Periodicity</th>
+                                        <th class="px-3 py-2">Category</th>
+                                        <th class="px-3 py-2">Regularity Status</th>
+                                        <th class="px-3 py-2">Circulation Base</th>
+                                        <th class="px-3 py-2">Circulation</th>
+                                        <th class="px-3 py-2">Rate</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="viewTable">
+                                    <tr class="bg-white border-bottom hover-shadow-sm">
+                                        <td class="px-3 py-2">001</td>
+                                        <td class="px-3 py-2">The Times</td>
+                                        <td class="px-3 py-2">2023-12-01</td>
+                                        <td class="px-3 py-2">California</td>
+                                        <td class="px-3 py-2">Los Angeles</td>
+                                        <td class="px-3 py-2">English</td>
+                                        <td class="px-3 py-2">Daily</td>
+                                        <td class="px-3 py-2">News</td>
+                                        <td class="px-3 py-2">Active</td>
+                                        <td class="px-3 py-2">100,000</td>
+                                        <td class="px-3 py-2">90,000</td>
+                                        <td class="px-3 py-2">$500</td>
+                                    </tr>
+                                    <tr class="bg-white border-bottom hover-shadow-sm">
+                                        <td class="px-3 py-2">002</td>
+                                        <td class="px-3 py-2">Daily Herald</td>
+                                        <td class="px-3 py-2">2023-11-20</td>
+                                        <td class="px-3 py-2">New York</td>
+                                        <td class="px-3 py-2">New York City</td>
+                                        <td class="px-3 py-2">English</td>
+                                        <td class="px-3 py-2">Weekly</td>
+                                        <td class="px-3 py-2">Business</td>
+                                        <td class="px-3 py-2">Inactive</td>
+                                        <td class="px-3 py-2">50,000</td>
+                                        <td class="px-3 py-2">45,000</td>
+                                        <td class="px-3 py-2">$300</td>
+                                    </tr>
+
+                                    <tr class="bg-white border-bottom hover-shadow-sm">
+                                        <td class="px-3 py-2">003</td>
+                                        <td class="px-3 py-2">The Guardian</td>
+                                        <td class="px-3 py-2">2024-01-15</td>
+                                        <td class="px-3 py-2">Texas</td>
+                                        <td class="px-3 py-2">Houston</td>
+                                        <td class="px-3 py-2">English</td>
+                                        <td class="px-3 py-2">Monthly</td>
+                                        <td class="px-3 py-2">Politics</td>
+                                        <td class="px-3 py-2">Active</td>
+                                        <td class="px-3 py-2">200,000</td>
+                                        <td class="px-3 py-2">190,000</td>
+                                        <td class="px-3 py-2">$800</td>
+                                    </tr>
+                                    <tr class="bg-white border-bottom hover-shadow-sm">
+                                        <td class="px-3 py-2">004</td>
+                                        <td class="px-3 py-2">Le Monde</td>
+                                        <td class="px-3 py-2">2024-02-10</td>
+                                        <td class="px-3 py-2">France</td>
+                                        <td class="px-3 py-2">Paris</td>
+                                        <td class="px-3 py-2">French</td>
+                                        <td class="px-3 py-2">Daily</td>
+                                        <td class="px-3 py-2">News</td>
+                                        <td class="px-3 py-2">Active</td>
+                                        <td class="px-3 py-2">500,000</td>
+                                        <td class="px-3 py-2">480,000</td>
+                                        <td class="px-3 py-2">$1200</td>
+                                    </tr>
+                                    <tr class="bg-white border-bottom hover-shadow-sm">
+                                        <td class="px-3 py-2">005</td>
+                                        <td class="px-3 py-2">El Pais</td>
+                                        <td class="px-3 py-2">2023-10-05</td>
+                                        <td class="px-3 py-2">Spain</td>
+                                        <td class="px-3 py-2">Madrid</td>
+                                        <td class="px-3 py-2">Spanish</td>
+                                        <td class="px-3 py-2">Daily</td>
+                                        <td class="px-3 py-2">Economy</td>
+                                        <td class="px-3 py-2">Active</td>
+                                        <td class="px-3 py-2">300,000</td>
+                                        <td class="px-3 py-2">290,000</td>
+                                        <td class="px-3 py-2">$700</td>
+                                    </tr>
+                                    <tr class="bg-white border-bottom hover-shadow-sm">
+                                        <td class="px-3 py-2">006</td>
+                                        <td class="px-3 py-2">The Hindu</td>
+                                        <td class="px-3 py-2">2024-03-01</td>
+                                        <td class="px-3 py-2">India</td>
+                                        <td class="px-3 py-2">Chennai</td>
+                                        <td class="px-3 py-2">English</td>
+                                        <td class="px-3 py-2">Daily</td>
+                                        <td class="px-3 py-2">News</td>
+                                        <td class="px-3 py-2">Active</td>
+                                        <td class="px-3 py-2">1,000,000</td>
+                                        <td class="px-3 py-2">950,000</td>
+                                        <td class="px-3 py-2">$1500</td>
+                                    </tr>
+                                    <tr class="bg-white border-bottom hover-shadow-sm">
+                                        <td class="px-3 py-2">007</td>
+                                        <td class="px-3 py-2">China Daily</td>
+                                        <td class="px-3 py-2">2023-08-15</td>
+                                        <td class="px-3 py-2">China</td>
+                                        <td class="px-3 py-2">Beijing</td>
+                                        <td class="px-3 py-2">Chinese</td>
+                                        <td class="px-3 py-2">Weekly</td>
+                                        <td class="px-3 py-2">News</td>
+                                        <td class="px-3 py-2">Inactive</td>
+                                        <td class="px-3 py-2">800,000</td>
+                                        <td class="px-3 py-2">750,000</td>
+                                        <td class="px-3 py-2">$1300</td>
+                                    </tr>
+                                    <tr class="bg-white border-bottom hover-shadow-sm">
+                                        <td class="px-3 py-2">008</td>
+                                        <td class="px-3 py-2">Sydney Morning Herald</td>
+                                        <td class="px-3 py-2">2024-04-10</td>
+                                        <td class="px-3 py-2">Australia</td>
+                                        <td class="px-3 py-2">Sydney</td>
+                                        <td class="px-3 py-2">English</td>
+                                        <td class="px-3 py-2">Daily</td>
+                                        <td class="px-3 py-2">Sports</td>
+                                        <td class="px-3 py-2">Active</td>
+                                        <td class="px-3 py-2">700,000</td>
+                                        <td class="px-3 py-2">680,000</td>
+                                        <td class="px-3 py-2">$1000</td>
+                                    </tr>
+                                    <tr class="bg-white border-bottom hover-shadow-sm">
+                                        <td class="px-3 py-2">009</td>
+                                        <td class="px-3 py-2">Asahi Shimbun</td>
+                                        <td class="px-3 py-2">2023-07-20</td>
+                                        <td class="px-3 py-2">Japan</td>
+                                        <td class="px-3 py-2">Tokyo</td>
+                                        <td class="px-3 py-2">Japanese</td>
+                                        <td class="px-3 py-2">Daily</td>
+                                        <td class="px-3 py-2">Technology</td>
+                                        <td class="px-3 py-2">Active</td>
+                                        <td class="px-3 py-2">900,000</td>
+                                        <td class="px-3 py-2">870,000</td>
+                                        <td class="px-3 py-2">$1100</td>
+                                    </tr>
+                                    <tr class="bg-white border-bottom hover-shadow-sm">
+                                        <td class="px-3 py-2">010</td>
+                                        <td class="px-3 py-2">Der Spiegel</td>
+                                        <td class="px-3 py-2">2023-06-25</td>
+                                        <td class="px-3 py-2">Germany</td>
+                                        <td class="px-3 py-2">Berlin</td>
+                                        <td class="px-3 py-2">German</td>
+                                        <td class="px-3 py-2">Monthly</td>
+                                        <td class="px-3 py-2">Politics</td>
+                                        <td class="px-3 py-2">Inactive</td>
+                                        <td class="px-3 py-2">600,000</td>
+                                        <td class="px-3 py-2">580,000</td>
+                                        <td class="px-3 py-2">$900</td>
+                                    </tr>
+                                    <tr class="bg-white border-bottom hover-shadow-sm">
+                                        <td class="px-3 py-2">011</td>
+                                        <td class="px-3 py-2">Globe and Mail</td>
+                                        <td class="px-3 py-2">2023-09-30</td>
+                                        <td class="px-3 py-2">Canada</td>
+                                        <td class="px-3 py-2">Toronto</td>
+                                        <td class="px-3 py-2">English</td>
+                                        <td class="px-3 py-2">Weekly</td>
+                                        <td class="px-3 py-2">Economy</td>
+                                        <td class="px-3 py-2">Active</td>
+                                        <td class="px-3 py-2">400,000</td>
+                                        <td class="px-3 py-2">380,000</td>
+                                        <td class="px-3 py-2">$600</td>
+                                    </tr>
+                                    <!-- Add more rows dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -143,9 +392,9 @@
         </div>
 
         <!-- Create Ro-->
-        <div class="tab-pane fade" id="createRo" role="tabpanel">
+        <div class="tab-pane fade" id="createRo" role="tabpanel" style="background-color: rgb(50,52,71); margin-top: 5px; padding: 15px 35px" ;>
             <div class="container-fluid">
-                <h2>Create RO</h2>
+                <h2 class="" style="color: white">Create RO</h2>
                 <div  >
                     <div class="container-fluid">
                         <form>
@@ -318,8 +567,8 @@
                         <thead>
                         <tr>
 
-                            <th rowspan="2">Action</th>
-                            <th rowspan="2" th:hidden="true">Submission Date</th>
+                            <th rowspan="2"  style="color: white; font-weight: inherit;" >Action</th>
+                            <th rowspan="2" th:hidden="true" >Submission Date</th>
                             <th rowspan="2" th:hidden="true">Client Name</th>
                             <th rowspan="2" th:hidden="true">Page Number</th>
                             <th rowspan="2" th:hidden="true">Newspaper Name</th>
@@ -331,17 +580,17 @@
                             <th rowspan="2" th:hidden="true">Language</th>
 
 
-                            <th rowspan="2" th:hidden="true">RO Number</th>
-                            <th rowspan="2">RO Date</th>
-                            <th rowspan="2">Date of <br>publication</th>
-                            <th colspan="2">Size</th>
-                            <th rowspan="2">Size in <br>cm2</th>
-                            <th rowspan="2">Total Amount <br>Rs</th>
-                            <th rowspan="2">Price to <br>Newspaper </th>
-                            <th rowspan="2">GST Amount</th>
-                            <th rowspan="2">New Payable</th>
-                            <th rowspan="2">Email id</th>
-                            <th rowspan="2">Phone Number</th>
+                            <th rowspan="2"  th:hidden="true">RO Number</th>
+                            <th  style="color: white; font-weight: inherit;" rowspan="2">RO Date</th>
+                            <th rowspan="2"  style="color: white; font-weight: inherit;">Date of <br>publication</th>
+                            <th colspan="2"  style="color: white; font-weight: inherit;">Size</th>
+                            <th rowspan="2"  style="color: white; font-weight: inherit;">Size in <br>cm2</th>
+                            <th rowspan="2"  style="color: white; font-weight: inherit;">Total Amount <br>Rs</th>
+                            <th rowspan="2"  style="color: white; font-weight: inherit;">Price to <br>Newspaper </th>
+                            <th rowspan="2"  style="color: white; font-weight: inherit;">GST Amount</th>
+                            <th rowspan="2"  style="color: white; font-weight: inherit;">New Payable</th>
+                            <th rowspan="2"  style="color: white; font-weight: inherit;">Email id</th>
+                            <th rowspan="2"  style="color: white; font-weight: inherit;">Phone Number</th>
 
 
 
@@ -795,6 +1044,21 @@
 
 <!-- Self Defined JavaScript -->
 <script src="/js/common.js"></script>
+
+<script>
+    // Listen for tab changes
+    document.querySelectorAll('.nav-link').forEach(tab => {
+        tab.addEventListener('show.bs.tab', function (event) {
+            // Reset all tabs to yellow text
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.style.color = 'white';
+            });
+
+            // Set the currently active tab's text to black
+            event.target.style.color = 'black';
+        });
+    });
+</script>
 
 
 </body>
